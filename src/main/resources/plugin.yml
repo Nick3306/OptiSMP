@@ -1,0 +1,9 @@
+name: OptiProtect
+main: Nick3306.github.io.OptiSMP.Main
+version: .01
+commands:
+   Protect:
+      description: OptiSMP
+      usage:
+      permission: 
+      permission-message: You do not have permission to use this command!
