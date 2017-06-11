@@ -1,5 +1,8 @@
 package Protect;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,6 +17,7 @@ public class CommandHandler implements CommandExecutor
 {
 	private Main plugin;
 	private Utilities util;
+	public HashMap<String, ProtectionField> waitingResponse = new HashMap<String, ProtectionField>();
 	public CommandHandler(Main plugin)
 	{
 	   this.plugin = plugin;
@@ -23,11 +27,18 @@ public class CommandHandler implements CommandExecutor
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2lable, String[] args) 
 	{
 		Player player = (Player) sender;
-		if(cmd.getName().equalsIgnoreCase("Protect") || cmd.getName().equalsIgnoreCase("P"))
+		if(cmd.getName().equalsIgnoreCase("pfield"))
 		{
 			if(args.length == 0)
 			{
-				player.sendMessage(ChatColor.RED + "Incorrect usage: /protect create or /protect info");
+				player.sendMessage(ChatColor.RED + "          OptiProtect");
+				player.sendMessage(ChatColor.RED + "_____________________________________________________");
+				player.sendMessage(ChatColor.GREEN + "/pfield create: Start creation of a pfield");
+				player.sendMessage(ChatColor.GREEN + "/pfield remove: Remove the pfield you are standing in");
+				player.sendMessage(ChatColor.GREEN + "/pfield info: Get info about the pfield you are standing in");
+				player.sendMessage(ChatColor.GREEN + "/pfield addmember <playername>: Add specified player to the pfield you are standing in");
+				player.sendMessage(ChatColor.GREEN + "/pfield removemember <playername>: Remove specified player from the pfield you are standing in");
+				return true;
 			}
 			if(args[0].equalsIgnoreCase("Create"))
 			{
@@ -38,10 +49,10 @@ public class CommandHandler implements CommandExecutor
 				}
 				else
 				{
-					ProtectionField newField = new ProtectionField(player.getWorld(),null, null, player.getUniqueId(), plugin.getConfig().getInt("FieldID"));
-					plugin.newFields.add(newField);
-					plugin.getConfig().set("FieldID", plugin.getConfig().getInt("FieldID")+ 1);
+					ProtectionField newField = new ProtectionField(player.getWorld(),null, null, player.getUniqueId(), util.getNextFieldId());
+					plugin.newFields.add(newField);					
 					player.sendMessage(ChatColor.GREEN + "Place the first block to define the field");
+					return true;
 				}
 			}
 			if(args[0].equalsIgnoreCase("info"))
@@ -56,7 +67,7 @@ public class CommandHandler implements CommandExecutor
 				}
 				else
 				{
-					player.sendMessage(ChatColor.GREEN + "You are not in a field currently!");
+					player.sendMessage(ChatColor.RED + "You are not in a field currently!");
 					return false;
 				}
 				
@@ -65,7 +76,7 @@ public class CommandHandler implements CommandExecutor
 			{
 				if(args.length <=1)
 				{
-					player.sendMessage(ChatColor.RED + "Incorrect usage: /protect addmember (membername)");
+					player.sendMessage(ChatColor.RED + "Incorrect usage: /protect addmember <membername>");
 					return false;
 				}
 				if(args.length == 2)
@@ -78,7 +89,7 @@ public class CommandHandler implements CommandExecutor
 					}
 					else
 					{
-						if(field.getOwner() == player.getUniqueId())
+						if(field.getOwner().toString().equals(player.getUniqueId().toString()))
 						{
 							if(plugin.getServer().getPlayer(args[1]) != null)
 							{
@@ -104,7 +115,7 @@ public class CommandHandler implements CommandExecutor
 			{
 				if(args.length <=1)
 				{
-					player.sendMessage(ChatColor.RED + "Incorrect usage: /protect removemember (membername)");
+					player.sendMessage(ChatColor.RED + "Incorrect usage: /protect removemember <membername>");
 					return false;
 				}
 				if(args.length == 2)
@@ -117,7 +128,7 @@ public class CommandHandler implements CommandExecutor
 					}
 					else
 					{
-						if(field.getOwner() == player.getUniqueId())
+						if(field.getOwner().toString().equals(player.getUniqueId().toString()))
 						{
 							if(plugin.getServer().getPlayer(args[1]) != null)
 							{
@@ -137,6 +148,63 @@ public class CommandHandler implements CommandExecutor
 						}
 					
 					}
+				}
+			}
+			if(args[0].equalsIgnoreCase("remove"))
+			{
+				Location loc = player.getLocation();			
+				ProtectionField field = util.getPField(loc);
+				if(field != null)
+				{
+					if(field.getOwner().toString().equals(player.getUniqueId().toString()))
+					{
+						waitingResponse.put(player.getName(), field);
+						player.sendMessage(ChatColor.RED + "WARNING: You are about to delete this pfield. Type '/pfield yes' to confirm or '/pfield no' to cancel");
+						return true;
+					}
+					else
+					{
+						player.sendMessage(ChatColor.RED + "You are not the owner of this field!");
+						return false;
+					}
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "You are not in a field currently!");
+					return false;
+				}
+				
+			}
+			if(args[0].equalsIgnoreCase("yes"))
+			{
+				if(waitingResponse.get(player.getName()) != null)
+				{
+					ProtectionField fieldToRemove = waitingResponse.get(player.getName());
+					plugin.sql.removeField(fieldToRemove);
+					util.removeField(fieldToRemove);
+					waitingResponse.remove(player.getName());
+					player.sendMessage(ChatColor.GREEN + "Field Removed");
+					return true;
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "Pfield is not waiting for a response from you");
+					return false;
+				}
+				
+			}
+			if(args[0].equalsIgnoreCase("no"))
+			{
+				if(waitingResponse.get(player.getName()) != null)
+				{
+					player.sendMessage("Remove canceled");
+					waitingResponse.remove(player.getName());
+					return true;
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "Pfield is not waiting for a response from you");
+					return false;
 				}
 			}
 		}

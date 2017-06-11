@@ -36,9 +36,10 @@ public class Main extends JavaPlugin
 		pm.registerEvents(new BlockEditListeners(this), this);
 		pm.registerEvents(new RegionDefineListener(this), this);
 		
-		getCommand("Protect").setExecutor(new CommandHandler(this));
+		getCommand("pfield").setExecutor(new CommandHandler(this));
 		
 	}
+
 	public void onDisable()
 	{
 		sql.closeConnections();

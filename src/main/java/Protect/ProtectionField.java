@@ -23,6 +23,7 @@ public class ProtectionField
 		this.block1 = block1;
 		this.block2 = block2;
 		this.owner = owner;
+		this.id = id;
 		
 	}
 	boolean chestFlag;

@@ -24,7 +24,7 @@ public class RegionDefineListener implements Listener
 		Player player = event.getPlayer();
 		if(this.plugin.util.definingField(player))
 		{
-			player.sendMessage("In first if");
+			
 			Location block = event.getBlockPlaced().getLocation();		
 			ProtectionField field = util.getNewField(player);
 			if (field.getBlock1() == null)
@@ -36,10 +36,21 @@ public class RegionDefineListener implements Listener
 			else if (field.getBlock2() == null)
 			{
 				field.setBlock2(block);
-				double area = field.getArea();
+				for(ProtectionField otherField : plugin.fields)
+				{				
+					if(util.fieldOverlap(field.getBlock1(), otherField.getBlock1(), field.getBlock2(), otherField.getBlock2()))
+					{
+						player.sendMessage("Your filed overlaps an existing field! Try again!");
+						util.removeNewField(field);
+						event.setCancelled(true);
+						return;
+					}
+				}
 				plugin.fields.add(field);
 				util.removeNewField(field);
-				player.sendMessage("Field added!!!");
+				player.sendMessage("Field added!");
+				// Now that this field is officially added, increment the next fields ID
+				util.setNextFieldId(util.getNextFieldId()+1);
 				event.setCancelled(true);
 				
 				this.plugin.sql.addField(field);

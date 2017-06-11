@@ -1,8 +1,8 @@
-name: OptiProtect
+name: OptiSMP
 main: Nick3306.github.io.OptiSMP.Main
 version: .01
 commands:
-   Protect:
+   pfield:
       description: OptiSMP
       usage:
       permission: 

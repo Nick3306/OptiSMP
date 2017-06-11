@@ -76,7 +76,7 @@ public void getFields()
 					block1 = new Location(world, Double.parseDouble(block1Coords[0]),Double.parseDouble(block1Coords[1]),Double.parseDouble(block1Coords[2]));
 					
 					block2String = fieldsResult.getString("block2");
-					String[] block2Coords = block2String.split(",");
+					String[] block2Coords = block2String.split("-");
 					block2 = new Location(world, Double.parseDouble(block2Coords[0]),Double.parseDouble(block2Coords[1]),Double.parseDouble(block2Coords[2]));
 					
 					ProtectionField fieldToAdd = new ProtectionField(world, block1, block2, owner, id);
@@ -85,7 +85,7 @@ public void getFields()
 					//Grab field members for current field					
 					PreparedStatement fieldMembers = myConn.prepareStatement("SELECT * FROM FieldMembers WHERE fieldID =?;");
 					fieldMembers.setString(1, owner.toString());	
-					ResultSet fieldMembersResult = myStatement.executeQuery();
+					ResultSet fieldMembersResult = fieldMembers.executeQuery();
 					
 					//add all field members to fields member arraylist
 					while(fieldMembersResult.next() != false)
@@ -102,8 +102,7 @@ public void getFields()
 			{
 				e.printStackTrace();
 			}
-
-		
+			
 		}});
 }
 	public void addField(final ProtectionField field)
@@ -190,7 +189,7 @@ public void getFields()
 			}
 		});
 	}
-	public void deleteField(final ProtectionField field)
+	public void removeField(final ProtectionField field)
 	{
 		Bukkit.getScheduler().runTaskAsynchronously(this.plugin, new Runnable()
 		{

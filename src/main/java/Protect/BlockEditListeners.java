@@ -1,5 +1,6 @@
 package Protect;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,9 +32,9 @@ public class BlockEditListeners implements Listener
 		if (action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR || action == Action.RIGHT_CLICK_AIR)
 		{
 			if(this.plugin.util.inField(loc))
-			{
+			{			
 				ProtectionField pField = util.getPField(loc);
-				if(!pField.isMember(player) || player.getUniqueId() != pField.getOwner())
+				if(!pField.isMember(player) && !player.getUniqueId().toString().equals(pField.getOwner().toString()))
 				{
 					// Player is not allowed to build in field, check flags
 					
@@ -44,19 +45,22 @@ public class BlockEditListeners implements Listener
 						{
 							if(pField.getChestFlag() == true)
 							{
-								event.setCancelled(false);
+								return;
+							}
+							else
+							{
+								player.sendMessage(ChatColor.RED + "You are not allowed in chests here");
+								event.setCancelled(true);
 							}
 						}
 					}
-					else
-					{
-						player.sendMessage("You are not allowed to build here!");
-						event.setCancelled(true);
-					}
+
+					player.sendMessage("You are not allowed to build here!");
+					event.setCancelled(true);
 				}
 				else
 				{
-					//Do nothing
+					//They are a member, let them build
 				}
 			}
 		}
