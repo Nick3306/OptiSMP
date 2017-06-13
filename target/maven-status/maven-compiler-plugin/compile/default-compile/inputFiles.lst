@@ -1,8 +1,8 @@
-C:\Users\Nick\workspace\OptiSMP\src\main\java\Protect\BlockEditListeners.java
-C:\Users\Nick\workspace\OptiSMP\src\main\java\Protect\ProtectionField.java
-C:\Users\Nick\workspace\OptiSMP\src\main\java\Protect\Utilities.java
-C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\MySql.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\BlockEditListeners.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\RegionDefineListener.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Main.java
-C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\SMPplayer.java
-C:\Users\Nick\workspace\OptiSMP\src\main\java\Protect\RegionDefineListener.java
-C:\Users\Nick\workspace\OptiSMP\src\main\java\Protect\CommandHandler.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Utilities\SMPplayer.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Commands\PField.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\OptiProtect\Utilities.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Utilities\MySql.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\OptiProtect\ProtectionField.java

@@ -8,11 +8,12 @@ import javax.naming.NamingException;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import Protect.BlockEditListeners;
-import Protect.CommandHandler;
-import Protect.ProtectionField;
-import Protect.RegionDefineListener;
-import Protect.Utilities;
+import Nick3306.github.io.OptiSMP.Commands.PField;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
+import Nick3306.github.io.OptiSMP.Listeners.BlockEditListeners;
+import Nick3306.github.io.OptiSMP.Listeners.RegionDefineListener;
+import Nick3306.github.io.OptiSMP.Utilities.MySql;
 
 
 
@@ -36,7 +37,7 @@ public class Main extends JavaPlugin
 		pm.registerEvents(new BlockEditListeners(this), this);
 		pm.registerEvents(new RegionDefineListener(this), this);
 		
-		getCommand("pfield").setExecutor(new CommandHandler(this));
+		getCommand("pfield").setExecutor(new PField(this));
 		
 	}
 

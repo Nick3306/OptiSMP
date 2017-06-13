@@ -1,4 +1,4 @@
-package Protect;
+package Nick3306.github.io.OptiSMP.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import Nick3306.github.io.OptiSMP.Main;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
 
 public class RegionDefineListener implements Listener
 {

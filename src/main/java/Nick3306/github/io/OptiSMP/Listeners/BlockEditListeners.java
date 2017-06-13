@@ -1,4 +1,4 @@
-package Protect;
+package Nick3306.github.io.OptiSMP.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,6 +10,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import Nick3306.github.io.OptiSMP.Main;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
 
 
 

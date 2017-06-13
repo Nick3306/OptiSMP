@@ -1,4 +1,4 @@
-package Protect;
+package Nick3306.github.io.OptiSMP.Components.OptiProtect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

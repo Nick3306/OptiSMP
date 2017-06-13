@@ -1,4 +1,4 @@
-package Nick3306.github.io.OptiSMP;
+package Nick3306.github.io.OptiSMP.Utilities;
 import java.util.UUID;
 
 public class SMPplayer

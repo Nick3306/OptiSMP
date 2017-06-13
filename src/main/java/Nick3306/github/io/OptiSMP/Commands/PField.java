@@ -1,4 +1,4 @@
-package Protect;
+package Nick3306.github.io.OptiSMP.Commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,13 +12,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import Nick3306.github.io.OptiSMP.Main;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
 
-public class CommandHandler implements CommandExecutor
+public class PField implements CommandExecutor
 {
 	private Main plugin;
 	private Utilities util;
 	public HashMap<String, ProtectionField> waitingResponse = new HashMap<String, ProtectionField>();
-	public CommandHandler(Main plugin)
+	public PField(Main plugin)
 	{
 	   this.plugin = plugin;
 	   this.util = this.plugin.util;

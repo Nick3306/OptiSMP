@@ -1,4 +1,4 @@
-package Nick3306.github.io.OptiSMP;
+package Nick3306.github.io.OptiSMP.Utilities;
 
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
@@ -12,8 +12,9 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import com.zaxxer.hikari.*;
 
-import Protect.ProtectionField;
-import Protect.Utilities;
+import Nick3306.github.io.OptiSMP.Main;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
 
 // Uses Hikari to implement connection pooling so a new connection doesnt have to be opened every time I need it
 public class MySql 
