@@ -185,7 +185,8 @@ public void getFields()
 				}
 				catch(Exception e)
 				{
-					
+					e.printStackTrace();
+					Bukkit.getLogger().info("FAILED to remove from DB");
 				}
 			}
 		});

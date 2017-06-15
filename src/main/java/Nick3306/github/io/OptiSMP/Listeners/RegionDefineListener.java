@@ -53,9 +53,12 @@ public class RegionDefineListener implements Listener
 				player.sendMessage("Field added!");
 				// Now that this field is officially added, increment the next fields ID
 				util.setNextFieldId(util.getNextFieldId()+1);
-				event.setCancelled(true);
-				
+				event.setCancelled(true);				
 				this.plugin.sql.addField(field);
+				Bukkit.getLogger().info("Block locations before highlight are: " + field.getBlock1().toString() + "  " + field.getBlock2().toString());
+				util.highlightField(field, player);
+				Bukkit.getLogger().info("Block locations after highlight are: " + field.getBlock1().toString() + "  " + field.getBlock2().toString());
+				
 				// Check if they have enough to buy the protection or if its free
 				//if it's free
 				/*

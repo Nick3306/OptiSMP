@@ -3,6 +3,7 @@ package Nick3306.github.io.OptiSMP.Components.OptiProtect;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -73,16 +74,21 @@ public class ProtectionField
 	}
 	public boolean inPField(Location loc)
 	{
+		Bukkit.getLogger().info("Player location is: " + loc);
+		
 		int maxX = Math.max(block1.getBlockX(), block2.getBlockX());
 		int minX = Math.min(block1.getBlockX(), block2.getBlockX());
 		int maxY = Math.max(block1.getBlockY(), block2.getBlockY());
 		int minY = Math.min(block1.getBlockY(), block2.getBlockY());
 		int maxZ = Math.max(block1.getBlockZ(), block2.getBlockZ());
 		int minZ = Math.min(block1.getBlockZ(), block2.getBlockZ());
+		Bukkit.getLogger().info("mins and maxs are: " + Integer.toString(maxX) + " " + Integer.toString(minX) + " " + Integer.toString(maxY) + " " + Integer.toString(minY) + " " + Integer.toString(maxZ) + " " + Integer.toString(minZ) + " " );
 		if(loc.getBlockX() >= minX && loc.getBlockX() <= maxX && loc.getBlockY() >= minY && loc.getBlockY() <= maxY && loc.getBlockZ() >= minZ && loc.getBlockZ() <= maxZ)
 		{
+			//Bukkit.getLogger().info("inPField in the object returned true");
 			return true;
 		}
+		//Bukkit.getLogger().info("inPField in the object returned false");
 		return false;
 	}
 }

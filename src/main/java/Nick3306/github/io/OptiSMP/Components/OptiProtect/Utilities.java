@@ -1,10 +1,17 @@
 package Nick3306.github.io.OptiSMP.Components.OptiProtect;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import Nick3306.github.io.OptiSMP.Main;
+import net.minecraft.server.v1_12_R1.EnumParticle;
+import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
 
 
 //Class contains functions that will have to be used over and over again on a general basis.
@@ -36,6 +43,7 @@ public class Utilities
 	// Gets the protection field the location is in, null if not in a protection field
 	public ProtectionField getPField(Location loc)
 	{
+		Bukkit.getLogger().info("In getPField");
 		for(ProtectionField field : plugin.fields)
 		{
 			if(field.inPField(loc))
@@ -97,6 +105,7 @@ public class Utilities
 				plugin.fields.remove(i);
 			}
 		}
+		Bukkit.getLogger().info("Size after loop is: " + sizeOfFields());
 	}
 	
 	// Checks is the defined field overlaps with another
@@ -129,12 +138,188 @@ public class Utilities
 	
 	public int getNextFieldId()
 	{
+		if(plugin.fields.size() == 0)
+		{
+			return 0;
+		}
 		int index = plugin.fields.size() -1;
 		return plugin.fields.get(index).getId() + 1;
 	}
 	public void setNextFieldId(int num)
 	{
 		this.nextFieldId = num;
+	}
+	
+	// Takes a protection field and spawns particles that only the player can see to show the protection field he just created.
+	public void highlightField(ProtectionField field, Player player)
+	{	
+		Location lowBlock;
+		Location highBlock;
+		if(field.getBlock1().getY() <= field.getBlock2().getY())
+		{
+			lowBlock = field.getBlock1().clone();
+			highBlock = field.getBlock2().clone();
+		}
+		else
+		{
+			lowBlock =  field.getBlock2().clone();
+			highBlock = field.getBlock1().clone();
+		}
+		Location low = lowBlock;
+		Location high = highBlock;
+		ArrayList<Location> toReturn = new ArrayList<Location>();
+		//These variables are the components of the displacement between the two corners
+		//The difference in x, y, and z
+		int dx = (int) Math.abs(highBlock.getX() - lowBlock.getX());
+		int dy = (int) Math.abs(highBlock.getY() - lowBlock.getY());
+		int dz = (int) Math.abs(highBlock.getZ() - lowBlock.getZ());
+		Bukkit.getLogger().info(Integer.toString(dx) + " " + Integer.toString(dy) + " " + Integer.toString(dz));
+		
+		
+		for(int x = 0; x <= dx; x++)
+		{
+			Location temp1 = highBlock.clone();
+			Location temp2 = lowBlock.clone();
+			
+			Location tempLowUp = lowBlock.clone();
+			tempLowUp.setY(tempLowUp.getY() + dy);
+			
+			Location tempHighDown = highBlock.clone();
+			tempHighDown.setY(tempHighDown.getY() - dy);
+
+			if(highBlock.getX() >= lowBlock.getX())
+			{
+				Bukkit.getLogger().info("high X greater than low X");
+				toReturn.add(new Location(null,temp1.getX() - x, temp1.getY(), temp1.getZ()));
+				
+				toReturn.add(new Location(null,temp2.getX() + x, temp2.getY(), temp2.getZ()));
+				
+				//Add block above low block
+				toReturn.add(new Location(null,tempLowUp.getX() + x, tempLowUp.getY(), tempLowUp.getZ()));
+				
+				//Add block below high
+				toReturn.add(new Location(null,tempHighDown.getX() - x, tempHighDown.getY(), tempHighDown.getZ()));
+				
+			}
+			else if(highBlock.getX() <= lowBlock.getX())
+			{
+				 toReturn.add(new Location(null,temp1.getX() + x, temp1.getY(), temp1.getZ()));
+				 toReturn.add(new Location(null,temp2.getX() - x, temp2.getY(), temp2.getZ()));
+				 
+				//Add block above low block
+				toReturn.add(new Location(null,tempLowUp.getX() - x, tempLowUp.getY(), tempLowUp.getZ()));
+				
+				//Add block below high
+				toReturn.add(new Location(null,tempHighDown.getX() + x, tempHighDown.getY(), tempHighDown.getZ()));
+			}			 
+		}
+		for(int y = 0; y <= dy; y++)
+		{
+			Location temp1 = highBlock.clone();
+			Location temp2 = lowBlock.clone();	
+			
+			Location lowBlockUp = new Location(null, lowBlock.getX(), highBlock.getY(), highBlock.getZ());
+			
+			if(highBlock.getY() >= lowBlock.getY())
+			{
+				Bukkit.getLogger().info("high Y greater than low Y");
+				toReturn.add(new Location(null,temp1.getX(), temp1.getY() - y, temp1.getZ()));
+				
+				toReturn.add(new Location(null,temp2.getX(), temp2.getY() + y, temp2.getZ()));
+			}
+			else if(highBlock.getY() <= lowBlock.getY())
+			{
+				 toReturn.add(new Location(null,temp1.getX(), temp1.getY() + y, temp1.getZ()));
+				 
+				 toReturn.add(new Location(null,temp2.getX(), temp2.getY() - y, temp2.getZ()));
+			}
+			
+			if(highBlock.getX() != lowBlock.getX())
+			{
+				toReturn.add(new Location(null, highBlock.getX(), highBlock.getY() - y, lowBlock.getZ()));
+				toReturn.add(new Location(null, lowBlock.getX(), highBlock.getY() - y, highBlock.getZ()));
+			}
+			else
+			{
+				toReturn.add(new Location(null, lowBlock.getX(), highBlock.getY() - y, highBlock.getZ()));
+				toReturn.add(new Location(null, highBlock.getX(), highBlock.getY() - y, lowBlock.getZ()));
+			}
+		}
+		for(int z = 0; z <= dz; z++)
+		{
+			Location temp1 = highBlock.clone();
+			Location temp2 = lowBlock.clone();
+			
+			Location tempLowUp = lowBlock.clone();
+			tempLowUp.setY(tempLowUp.getY() + dy);
+			
+			Location tempHighDown = highBlock.clone();
+			tempHighDown.setY(tempHighDown.getY() - dy);
+			
+			if(highBlock.getZ() >= lowBlock.getZ())
+			{
+				Bukkit.getLogger().info("high Z greater than low Z");
+				toReturn.add(new Location(null,temp1.getX(), temp1.getY(), temp1.getZ() - z));
+				
+				toReturn.add(new Location(null,temp2.getX(), temp2.getY(), temp2.getZ() + z));
+				
+				//Add block above low block
+				toReturn.add(new Location(null,tempLowUp.getX(), tempLowUp.getY(), tempLowUp.getZ() + z));
+				
+				//Add block below high
+				toReturn.add(new Location(null,tempHighDown.getX(), tempHighDown.getY(), tempHighDown.getZ() - z));
+			}
+			else if(highBlock.getZ() <= lowBlock.getZ())
+			{
+				 toReturn.add(new Location(null,temp1.getX(), temp1.getY(), temp1.getZ() + z));
+				 
+				 toReturn.add(new Location(null,temp2.getX(), temp2.getY(), temp2.getZ() - z));
+				 
+				//Add block above low block
+				toReturn.add(new Location(null,tempLowUp.getX(), tempLowUp.getY(), tempLowUp.getZ() - z));
+				
+				//Add block below high
+				toReturn.add(new Location(null,tempHighDown.getX(), tempHighDown.getY(), tempHighDown.getZ() + z));
+			}			 
+		}
+					  
+		  // Spawn particles to display area
+		  final ArrayList<Location> toIterate = toReturn;
+		  final Player p = player;		 		  
+		  final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() { 	
+			  
+	            @Override
+	            public void run() 
+	            {
+	            	for(Location loc : toIterate)
+					  {					 
+						  PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.FLAME, true, (float)loc.getX(), (float)loc.getY(), (float)loc.getZ(), 0, 0, 0, 0, 1);
+						  ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);				
+					  }
+	            }
+	            
+	        }, 0, 15L);
+		  Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() 
+		  {
+			  
+			  public void run() 
+			  {
+				  Bukkit.getScheduler().cancelTask(taskId);
+			  }
+			  }, 135L);
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		
+		  
+	}
+	public int sizeOfFields()
+	{
+		return plugin.fields.size();
 	}
 			
 

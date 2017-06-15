@@ -1,19 +1,23 @@
 package Nick3306.github.io.OptiSMP.Commands;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
+import net.minecraft.server.v1_12_R1.EnumParticle;
+import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
+
 
 public class PField implements CommandExecutor
 {
@@ -69,6 +73,7 @@ public class PField implements CommandExecutor
 				}
 				else
 				{
+					Bukkit.getLogger().info("returnfield is null");
 					player.sendMessage(ChatColor.RED + "You are not in a field currently!");
 					return false;
 				}
@@ -186,6 +191,7 @@ public class PField implements CommandExecutor
 					util.removeField(fieldToRemove);
 					waitingResponse.remove(player.getName());
 					player.sendMessage(ChatColor.GREEN + "Field Removed");
+					Bukkit.getLogger().info("Size after command returns is: " + util.sizeOfFields());
 					return true;
 				}
 				else
@@ -208,6 +214,14 @@ public class PField implements CommandExecutor
 					player.sendMessage(ChatColor.RED + "Pfield is not waiting for a response from you");
 					return false;
 				}
+			}
+			if(args[0].equalsIgnoreCase("effect"))
+			{
+				
+				//player.getLocation().getWorld().playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 2003);
+				
+				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.FLAME, true, player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), 0, 0, 0, 5, 10);
+				((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);				
 			}
 		}
 		return false;
