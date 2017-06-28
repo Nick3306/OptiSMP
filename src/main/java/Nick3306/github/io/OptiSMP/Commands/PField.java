@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import net.minecraft.server.v1_12_R1.EnumParticle;
 import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
 
@@ -22,12 +22,12 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
 public class PField implements CommandExecutor
 {
 	private Main plugin;
-	private Utilities util;
+	private ProtectUtilities util;
 	public HashMap<String, ProtectionField> waitingResponse = new HashMap<String, ProtectionField>();
 	public PField(Main plugin)
 	{
 	   this.plugin = plugin;
-	   this.util = this.plugin.util;
+	   this.util = this.plugin.protectUtil;
 	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2lable, String[] args) 
@@ -37,7 +37,7 @@ public class PField implements CommandExecutor
 		{
 			if(args.length == 0)
 			{
-				player.sendMessage(ChatColor.RED + "          OptiProtect");
+				player.sendMessage(ChatColor.RED + "                      OptiProtect");
 				player.sendMessage(ChatColor.RED + "_____________________________________________________");
 				player.sendMessage(ChatColor.GREEN + "/pfield create: Start creation of a pfield");
 				player.sendMessage(ChatColor.GREEN + "/pfield remove: Remove the pfield you are standing in");
@@ -70,6 +70,7 @@ public class PField implements CommandExecutor
 					player.sendMessage(ChatColor.GREEN + "ID: " + ChatColor.YELLOW + field.getId());
 					player.sendMessage(ChatColor.GREEN + "Owner: " + ChatColor.YELLOW + Bukkit.getOfflinePlayer(field.getOwner()).getName());
 					player.sendMessage(ChatColor.GREEN + "Area: " + ChatColor.YELLOW + field.getArea() + " blocks");
+					util.highlightField(field, player);
 				}
 				else
 				{
@@ -163,7 +164,7 @@ public class PField implements CommandExecutor
 				ProtectionField field = util.getPField(loc);
 				if(field != null)
 				{
-					if(field.getOwner().toString().equals(player.getUniqueId().toString()))
+					if(field.getOwner().toString().equals(player.getUniqueId().toString()) || player.hasPermission("optiSMP.protect.staff"))
 					{
 						waitingResponse.put(player.getName(), field);
 						player.sendMessage(ChatColor.RED + "WARNING: You are about to delete this pfield. Type '/pfield yes' to confirm or '/pfield no' to cancel");
@@ -215,13 +216,19 @@ public class PField implements CommandExecutor
 					return false;
 				}
 			}
-			if(args[0].equalsIgnoreCase("effect"))
+			if(args[0].equalsIgnoreCase("visualize"))
 			{
-				
-				//player.getLocation().getWorld().playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 2003);
-				
-				PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.FLAME, true, player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), 0, 0, 0, 5, 10);
-				((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);				
+				ProtectionField field = util.getPField(player.getLocation());
+				if(field != null)
+				{
+					util.highlightField(field, player);
+					player.sendMessage(ChatColor.GREEN + "Field is now visualized");
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "You are not in a protection field!");
+					return false;
+				}
 			}
 		}
 		return false;

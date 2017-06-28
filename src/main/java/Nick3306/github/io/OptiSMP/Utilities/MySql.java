@@ -14,19 +14,19 @@ import com.zaxxer.hikari.*;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 
 // Uses Hikari to implement connection pooling so a new connection doesnt have to be opened every time I need it
 public class MySql 
 {
 	private Main plugin;
-	private Utilities util;
+	private ProtectUtilities util;
 	HikariDataSource dataSource;
 	public MySql(Main plugin)
 	{
 		dataSource = new HikariDataSource();
 		this.plugin = plugin;
-		this.util = this.plugin.util;
+		this.util = this.plugin.protectUtil;
 				
 		
 		//loads the jdbc driver
@@ -73,11 +73,11 @@ public void getFields()
 					owner = UUID.fromString(fieldsResult.getString("Owner"));
 					block1String = fieldsResult.getString("block1");
 					world = plugin.getServer().getWorld(fieldsResult.getString("World"));
-					String[] block1Coords = block1String.split("-");
+					String[] block1Coords = block1String.split(",");
 					block1 = new Location(world, Double.parseDouble(block1Coords[0]),Double.parseDouble(block1Coords[1]),Double.parseDouble(block1Coords[2]));
 					
 					block2String = fieldsResult.getString("block2");
-					String[] block2Coords = block2String.split("-");
+					String[] block2Coords = block2String.split(",");
 					block2 = new Location(world, Double.parseDouble(block2Coords[0]),Double.parseDouble(block2Coords[1]),Double.parseDouble(block2Coords[2]));
 					
 					ProtectionField fieldToAdd = new ProtectionField(world, block1, block2, owner, id);
@@ -123,10 +123,10 @@ public void getFields()
 					myStatement.setInt(1, field.getId());
 					myStatement.setString(2, field.getOwner().toString());
 					Location block1 = field.getBlock1();
-					String block1String = block1.getBlockX() + "-" + block1.getBlockY() + "-" + block1.getBlockZ();
+					String block1String = block1.getBlockX() + "," + block1.getBlockY() + "," + block1.getBlockZ();
 					myStatement.setString(3, block1String);
 					Location block2 = field.getBlock2();
-					String block2String = block2.getBlockX() + "-" + block2.getBlockY() + "-" + block2.getBlockZ();
+					String block2String = block2.getBlockX() + "," + block2.getBlockY() + "," + block2.getBlockZ();
 					myStatement.setString(4, block2String);
 					myStatement.setString(5, field.getWorld().getName());
 					myStatement.execute();

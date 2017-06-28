@@ -15,12 +15,12 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
 
 
 //Class contains functions that will have to be used over and over again on a general basis.
-public class Utilities 
+public class ProtectUtilities 
 {
 	private int nextFieldId;
 	private Main plugin;
 
-	public Utilities(Main plugin)
+	public ProtectUtilities(Main plugin)
 	{
 	   this.plugin = plugin;
 	}
@@ -43,7 +43,7 @@ public class Utilities
 	// Gets the protection field the location is in, null if not in a protection field
 	public ProtectionField getPField(Location loc)
 	{
-		Bukkit.getLogger().info("In getPField");
+		//Bukkit.getLogger().info("In getPField");
 		for(ProtectionField field : plugin.fields)
 		{
 			if(field.inPField(loc))
@@ -105,7 +105,7 @@ public class Utilities
 				plugin.fields.remove(i);
 			}
 		}
-		Bukkit.getLogger().info("Size after loop is: " + sizeOfFields());
+
 	}
 	
 	// Checks is the defined field overlaps with another
@@ -173,7 +173,6 @@ public class Utilities
 		int dx = (int) Math.abs(highBlock.getX() - lowBlock.getX());
 		int dy = (int) Math.abs(highBlock.getY() - lowBlock.getY());
 		int dz = (int) Math.abs(highBlock.getZ() - lowBlock.getZ());
-		Bukkit.getLogger().info(Integer.toString(dx) + " " + Integer.toString(dy) + " " + Integer.toString(dz));
 		
 		
 		for(int x = 0; x <= dx; x++)
@@ -189,7 +188,7 @@ public class Utilities
 
 			if(highBlock.getX() >= lowBlock.getX())
 			{
-				Bukkit.getLogger().info("high X greater than low X");
+				
 				toReturn.add(new Location(null,temp1.getX() - x, temp1.getY(), temp1.getZ()));
 				
 				toReturn.add(new Location(null,temp2.getX() + x, temp2.getY(), temp2.getZ()));
@@ -222,7 +221,7 @@ public class Utilities
 			
 			if(highBlock.getY() >= lowBlock.getY())
 			{
-				Bukkit.getLogger().info("high Y greater than low Y");
+				
 				toReturn.add(new Location(null,temp1.getX(), temp1.getY() - y, temp1.getZ()));
 				
 				toReturn.add(new Location(null,temp2.getX(), temp2.getY() + y, temp2.getZ()));
@@ -258,7 +257,7 @@ public class Utilities
 			
 			if(highBlock.getZ() >= lowBlock.getZ())
 			{
-				Bukkit.getLogger().info("high Z greater than low Z");
+
 				toReturn.add(new Location(null,temp1.getX(), temp1.getY(), temp1.getZ() - z));
 				
 				toReturn.add(new Location(null,temp2.getX(), temp2.getY(), temp2.getZ() + z));

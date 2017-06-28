@@ -17,6 +17,7 @@ public class ProtectionField
 	Location block2;
 	World world;
 	Boolean pvp = false;
+	int area;
 	
 	public ProtectionField(World world, Location block1, Location block2, UUID owner, int id)
 	{
@@ -25,7 +26,6 @@ public class ProtectionField
 		this.block2 = block2;
 		this.owner = owner;
 		this.id = id;
-		
 	}
 	boolean chestFlag;
 	public boolean getChestFlag()
@@ -68,9 +68,33 @@ public class ProtectionField
 	{
 		return id;
 	}
+	public void setArea()
+	{
+		int dx = (int) Math.abs((block1.getX() - block2.getX()));
+		int dy = (int) Math.abs((block1.getY() - block2.getY()));
+		int dz = (int) Math.abs((block1.getZ() - block2.getZ()));
+		Bukkit.getLogger().info(dx + " " + dy + " " + dz);
+		if(dx == 0)
+		{
+			this.area = dy * dz;
+			return;
+		}
+		if(dy == 0)
+		{
+			this.area = dx * dz;
+			return;
+		}
+		if(dz == 0)
+		{
+			this.area = dx * dy;
+			return;
+		}
+		this.area = dx * dy * dz;
+
+	}
 	public double getArea()
 	{
-		return (Math.abs(block2.getX())-Math.abs(block1.getBlockX())) * (Math.abs(block2.getY())-Math.abs(block1.getY())) * (Math.abs(block2.getZ())-Math.abs(block1.getZ()));
+		return this.area;
 	}
 	public boolean inPField(Location loc)
 	{

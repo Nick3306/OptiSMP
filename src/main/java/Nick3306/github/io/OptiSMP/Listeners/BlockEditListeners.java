@@ -11,18 +11,18 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 
 
 
 public class BlockEditListeners implements Listener
 {
 	private Main plugin;
-	private Utilities util;
+	private ProtectUtilities util;
 	public BlockEditListeners(Main plugin)
 	{
 	   this.plugin = plugin;
-	   this.util = this.plugin.util;
+	   this.util = this.plugin.protectUtil;
 	}
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) 
@@ -31,12 +31,17 @@ public class BlockEditListeners implements Listener
 		Location loc = player.getLocation();
 		Action action = event.getAction();
 		String world = player.getWorld().getName();
-		if (action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR || action == Action.RIGHT_CLICK_AIR)
+		if (action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK)
 		{
-			if(this.plugin.util.inField(loc))
+			//Player tried to place or break a block, check to make sure block is not in pfield.
+			Location blockInteracted;
+			
+			blockInteracted = event.getClickedBlock().getLocation();
+			
+			if(this.plugin.protectUtil.inField(blockInteracted))
 			{			
-				ProtectionField pField = util.getPField(loc);
-				if(!pField.isMember(player) && !player.getUniqueId().toString().equals(pField.getOwner().toString()))
+				ProtectionField pField = util.getPField(blockInteracted);
+				if(!pField.isMember(player) && !player.getUniqueId().toString().equals(pField.getOwner().toString()) && !player.hasPermission("optiSMP.protect.staff"))
 				{
 					// Player is not allowed to build in field, check flags
 					

@@ -9,22 +9,22 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 
 public class RegionDefineListener implements Listener
 {
 	private Main plugin;
-	private Utilities util;
+	private ProtectUtilities util;
 	public RegionDefineListener(Main plugin)
 	{
 	   this.plugin = plugin;
-	   this.util = this.plugin.util;
+	   this.util = this.plugin.protectUtil;
 	}
 	@EventHandler
 	public void onBlockPlaced(BlockPlaceEvent event)
 	{
 		Player player = event.getPlayer();
-		if(this.plugin.util.definingField(player))
+		if(this.plugin.protectUtil.definingField(player))
 		{
 			
 			Location block = event.getBlockPlaced().getLocation();		
@@ -57,6 +57,7 @@ public class RegionDefineListener implements Listener
 				this.plugin.sql.addField(field);
 				Bukkit.getLogger().info("Block locations before highlight are: " + field.getBlock1().toString() + "  " + field.getBlock2().toString());
 				util.highlightField(field, player);
+				field.setArea();
 				Bukkit.getLogger().info("Block locations after highlight are: " + field.getBlock1().toString() + "  " + field.getBlock2().toString());
 				
 				// Check if they have enough to buy the protection or if its free

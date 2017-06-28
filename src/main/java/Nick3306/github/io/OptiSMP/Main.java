@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import Nick3306.github.io.OptiSMP.Commands.PField;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.Utilities;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Listeners.BlockEditListeners;
 import Nick3306.github.io.OptiSMP.Listeners.RegionDefineListener;
 import Nick3306.github.io.OptiSMP.Utilities.MySql;
@@ -21,7 +21,7 @@ public class Main extends JavaPlugin
 {
 	public ArrayList<ProtectionField> fields = new ArrayList<ProtectionField>();
 	public ArrayList<ProtectionField> newFields = new ArrayList<ProtectionField>();
-	public Utilities util;
+	public ProtectUtilities protectUtil;
 	public MySql sql;
 	public void onEnable()
 	{
@@ -29,7 +29,7 @@ public class Main extends JavaPlugin
 		this.getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
 		
-		util = new Utilities(this);
+		protectUtil = new ProtectUtilities(this);
 		sql = new MySql(this);		 
 		sql.getFields();
 		
