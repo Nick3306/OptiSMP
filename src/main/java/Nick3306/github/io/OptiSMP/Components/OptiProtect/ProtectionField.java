@@ -10,27 +10,34 @@ import org.bukkit.entity.Player;
 
 public class ProtectionField
 {
-	int id;
+	String name;
 	UUID owner;
 	public ArrayList<UUID> members = new ArrayList<UUID>();
 	Location block1;
 	Location block2;
 	World world;
-	Boolean pvp = false;
 	int area;
 	
-	public ProtectionField(World world, Location block1, Location block2, UUID owner, int id)
+	
+	//flags
+	Boolean pvp = false;
+	boolean chestFlag;
+
+	public ProtectionField(World world, Location block1, Location block2, UUID owner, String name)
 	{
 		this.world = world;
 		this.block1 = block1;
 		this.block2 = block2;
 		this.owner = owner;
-		this.id = id;
+		this.name = name;
 	}
-	boolean chestFlag;
 	public boolean getChestFlag()
 	{
 		return chestFlag;
+	}
+	public boolean pvp()
+	{
+		return pvp;
 	}
 	public UUID getOwner()
 	{
@@ -64,31 +71,17 @@ public class ProtectionField
 		}
 		return false;
 	}
-	public int getId()
+	public String getName()
 	{
-		return id;
+		return name;
 	}
 	public void setArea()
 	{
-		int dx = (int) Math.abs((block1.getX() - block2.getX()));
-		int dy = (int) Math.abs((block1.getY() - block2.getY()));
-		int dz = (int) Math.abs((block1.getZ() - block2.getZ()));
-		Bukkit.getLogger().info(dx + " " + dy + " " + dz);
-		if(dx == 0)
-		{
-			this.area = dy * dz;
-			return;
-		}
-		if(dy == 0)
-		{
-			this.area = dx * dz;
-			return;
-		}
-		if(dz == 0)
-		{
-			this.area = dx * dy;
-			return;
-		}
+		int dx = (int) Math.abs((block1.getX() - block2.getX())) + 1;
+		int dy = (int) Math.abs((block1.getY() - block2.getY())) + 1;
+		int dz = (int) Math.abs((block1.getZ() - block2.getZ())) + 1;
+		Bukkit.getLogger().info("DX DY AND DZ IN AREA ARE" + dx + " " + dy + " " + dz);
+
 		this.area = dx * dy * dz;
 
 	}
@@ -98,15 +91,18 @@ public class ProtectionField
 	}
 	public boolean inPField(Location loc)
 	{
-		Bukkit.getLogger().info("Player location is: " + loc);
-		
+		//Bukkit.getLogger().info("Player location is: " + loc);
+		if(!loc.getWorld().getName().equalsIgnoreCase(this.world.getName()))
+		{
+			return false;
+		}
 		int maxX = Math.max(block1.getBlockX(), block2.getBlockX());
 		int minX = Math.min(block1.getBlockX(), block2.getBlockX());
 		int maxY = Math.max(block1.getBlockY(), block2.getBlockY());
 		int minY = Math.min(block1.getBlockY(), block2.getBlockY());
 		int maxZ = Math.max(block1.getBlockZ(), block2.getBlockZ());
 		int minZ = Math.min(block1.getBlockZ(), block2.getBlockZ());
-		Bukkit.getLogger().info("mins and maxs are: " + Integer.toString(maxX) + " " + Integer.toString(minX) + " " + Integer.toString(maxY) + " " + Integer.toString(minY) + " " + Integer.toString(maxZ) + " " + Integer.toString(minZ) + " " );
+		//Bukkit.getLogger().info("mins and maxs are: " + Integer.toString(maxX) + " " + Integer.toString(minX) + " " + Integer.toString(maxY) + " " + Integer.toString(minY) + " " + Integer.toString(maxZ) + " " + Integer.toString(minZ) + " " );
 		if(loc.getBlockX() >= minX && loc.getBlockX() <= maxX && loc.getBlockY() >= minY && loc.getBlockY() <= maxY && loc.getBlockZ() >= minZ && loc.getBlockZ() <= maxZ)
 		{
 			//Bukkit.getLogger().info("inPField in the object returned true");

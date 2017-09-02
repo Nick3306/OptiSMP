@@ -2,6 +2,7 @@ package Nick3306.github.io.OptiSMP.Components.OptiProtect;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,7 +18,6 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
 //Class contains functions that will have to be used over and over again on a general basis.
 public class ProtectUtilities 
 {
-	private int nextFieldId;
 	private Main plugin;
 
 	public ProtectUtilities(Main plugin)
@@ -47,6 +47,18 @@ public class ProtectUtilities
 		for(ProtectionField field : plugin.fields)
 		{
 			if(field.inPField(loc))
+			{
+				return field;
+			}
+		}
+
+		return null;
+	}
+	public ProtectionField getPFieldByName(UUID owner, String name)
+	{
+		for(ProtectionField field : plugin.fields)
+		{
+			if(field.getOwner().equals(owner) && field.getName().equalsIgnoreCase(name))
 			{
 				return field;
 			}
@@ -100,7 +112,7 @@ public class ProtectUtilities
 	{
 		for(int i = 0; i < plugin.fields.size(); i++)
 		{
-			if(field.getId() == plugin.fields.get(i).getId())
+			if((field.getOwner() == plugin.fields.get(i).getOwner())&& field.getName().equalsIgnoreCase(plugin.fields.get(i).getName()))
 			{
 				plugin.fields.remove(i);
 			}
@@ -134,20 +146,6 @@ public class ProtectUtilities
 		{
 			return true;
 		}
-	}
-	
-	public int getNextFieldId()
-	{
-		if(plugin.fields.size() == 0)
-		{
-			return 0;
-		}
-		int index = plugin.fields.size() -1;
-		return plugin.fields.get(index).getId() + 1;
-	}
-	public void setNextFieldId(int num)
-	{
-		this.nextFieldId = num;
 	}
 	
 	// Takes a protection field and spawns particles that only the player can see to show the protection field he just created.
@@ -292,7 +290,7 @@ public class ProtectUtilities
 	            {
 	            	for(Location loc : toIterate)
 					  {					 
-						  PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.FLAME, true, (float)loc.getX(), (float)loc.getY(), (float)loc.getZ(), 0, 0, 0, 0, 1);
+						  PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.FLAME, true, (float)loc.getX() + .5f, (float)loc.getY() +.5f, (float)loc.getZ() +.5f, 0, 0, 0, 0, 1);
 						  ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);				
 					  }
 	            }
@@ -319,6 +317,18 @@ public class ProtectUtilities
 	public int sizeOfFields()
 	{
 		return plugin.fields.size();
+	}
+	
+	public boolean duplicateName(ProtectionField field)
+	{
+		for(ProtectionField fieldToCheck : plugin.fields)
+		{
+			if(fieldToCheck.getName().equals(field.getName()) && fieldToCheck.getOwner().equals(field.getOwner()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 			
 
