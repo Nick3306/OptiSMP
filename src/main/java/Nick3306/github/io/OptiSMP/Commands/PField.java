@@ -94,7 +94,7 @@ public class PField implements CommandExecutor
 						String members = "";
 						for(UUID member : field.members)
 						{
-							members = members + plugin.getServer().getOfflinePlayer(member) + ", ";
+							members = members + plugin.getServer().getOfflinePlayer(member).getName() + ", ";
 						}
 						player.sendMessage(ChatColor.GREEN + "Members: " + members);
 						proUtil.highlightField(field, player);

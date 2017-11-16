@@ -215,6 +215,7 @@ public void getFields()
 			{
 				try
 				{
+					Bukkit.getLogger().info("Removing field from the DB");
 					//Remove field from ProtectionField table
 					Connection myConn = dataSource.getConnection();
 					PreparedStatement myStatement = myConn.prepareStatement("DELETE FROM ProtectionFields WHERE field_name =? AND owner =?;");
@@ -230,6 +231,7 @@ public void getFields()
 					myStatement.execute();	
 					
 					myConn.close();
+					Bukkit.getLogger().info("Successfully Removed field from the DB");
 				}
 				catch(Exception e)
 				{
