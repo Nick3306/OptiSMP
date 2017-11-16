@@ -330,6 +330,19 @@ public class ProtectUtilities
 		}
 		return false;
 	}
+	
+	public ArrayList<ProtectionField> getPlayerFields(Player player)
+	{
+		ArrayList<ProtectionField> toReturn = new ArrayList<ProtectionField>();
+		for(ProtectionField field:plugin.fields)
+		{
+			if(field.getOwner().equals(player.getUniqueId()))
+			{
+				toReturn.add(field);
+			}
+		}
+		return toReturn;
+	}
 			
 
 }

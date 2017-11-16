@@ -1,6 +1,7 @@
 package Nick3306.github.io.OptiSMP.Listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,6 +26,7 @@ public class PlayerMovement implements Listener
 	   this.util = plugin.util;
 	   
 	}
+	
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
 	  public void playerMove(PlayerMoveEvent event)
 	  {
@@ -32,33 +34,50 @@ public class PlayerMovement implements Listener
 		    org.bukkit.Location to = event.getTo();
 		    int x2;
 		    if(Math.round(from.getX()) != (x2 = (int) Math.round(to.getX())))
-		    {
-		    	Bukkit.getLogger().info("Player moved a block");
+		    {		    	
 		    	Player player = event.getPlayer();
 		    	SMPplayer smpPlayer = util.getSMPPlayer(player);
+		    	String lastField = smpPlayer.getLastField();
 
 		    	
 		    	ProtectionField currentField = proUtil.getPField(player.getLocation());
-		    	ProtectionField lastField = smpPlayer.getLastField();
-		    	
-		    	if(currentField != lastField)	
+		    	if(currentField != null)
 		    	{
-		    		Bukkit.getLogger().info("Player changed fields");
-		    		// They changed fields, check them
-		    		//set the players last field to the current field
-		    		smpPlayer.setLastField(currentField);
-		    		util.updateLastField(smpPlayer);
-		    		
-		    		if(!currentField.getName().equalsIgnoreCase("none"))
-		    		{
-		    			player.sendMessage("You have entered field " + currentField.getName());
-		    			// display field name here
-		    		}		    				    	
-		    	}
+		    		if(!currentField.getName().equalsIgnoreCase(lastField))
+			    	{
+			    		Bukkit.getLogger().info("Player entered a new field");
+			    		player.sendMessage(ChatColor.GREEN + "You have entered the field " + currentField.getName() + " owned by player " + plugin.getServer().getOfflinePlayer(currentField.getOwner()).getName());
+		    			smpPlayer.setLastField(currentField.getName());	 
+		    			
+		    			/*
+			    		if(!currentField.getGreeting().equalsIgnoreCase("default"))
+			    		{			    			
+			    			player.sendMessage(ChatColor.GREEN + currentField.getGreeting());
+			    			smpPlayer.setLastField(currentField.getName());	    		
+			    		}
+			    		else
+			    		{
+			    			player.sendMessage(ChatColor.GREEN + "You have entered the field " + currentField.getName() + " owned by player " + plugin.getServer().getOfflinePlayer(currentField.getOwner()).getName());
+			    			smpPlayer.setLastField(currentField.getName());	 
+			    		}
+			    		*/
+			    	}		    
+		    	
+		    	}	
 		    	else
 		    	{
-		    		return;
+		    		if(!lastField.equalsIgnoreCase("none"))
+		    		{
+		    			Bukkit.getLogger().info("Player left a field");
+		    			smpPlayer.setLastField("none");	
+		    		}
 		    	}
+
+		    }
+		    else
+		    {
+		    	return;
 		    }
 	  }
+	  
 }

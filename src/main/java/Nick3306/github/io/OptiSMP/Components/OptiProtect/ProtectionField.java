@@ -17,6 +17,7 @@ public class ProtectionField
 	Location block2;
 	World world;
 	int area;
+	//String greeting = "default";
 	
 	
 	//flags
@@ -30,6 +31,7 @@ public class ProtectionField
 		this.block2 = block2;
 		this.owner = owner;
 		this.name = name;
+
 	}
 	public boolean getChestFlag()
 	{
@@ -80,12 +82,12 @@ public class ProtectionField
 		int dx = (int) Math.abs((block1.getX() - block2.getX())) + 1;
 		int dy = (int) Math.abs((block1.getY() - block2.getY())) + 1;
 		int dz = (int) Math.abs((block1.getZ() - block2.getZ())) + 1;
-		Bukkit.getLogger().info("DX DY AND DZ IN AREA ARE" + dx + " " + dy + " " + dz);
+		//Bukkit.getLogger().info("DX DY AND DZ IN AREA ARE" + dx + " " + dy + " " + dz);
 
 		this.area = dx * dy * dz;
 
 	}
-	public double getArea()
+	public int getArea()
 	{
 		return this.area;
 	}
@@ -111,4 +113,14 @@ public class ProtectionField
 		//Bukkit.getLogger().info("inPField in the object returned false");
 		return false;
 	}
+	/*
+	public void setGreeting(String toSet)
+	{
+		this.greeting = toSet;
+	}
+	public String getGreeting()
+	{
+		return this.greeting;
+	}
+	*/
 }

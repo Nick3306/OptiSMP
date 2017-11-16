@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,6 +18,8 @@ import com.zaxxer.hikari.*;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
+import ru.tehkode.permissions.PermissionUser;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 
 // Uses Hikari to implement connection pooling so a new connection doesnt have to be opened every time I need it
@@ -47,7 +50,7 @@ public class MySql
         dataSource.addDataSourceProperty("databaseName", "mdb_2");
         dataSource.addDataSourceProperty("user", "mdb_2");
         dataSource.addDataSourceProperty("password", "3ad657fda1");
-       // dataSource.setMaximumPoolSize(5);
+        dataSource.setMaximumPoolSize(15);
 	   // dataSource.setIdleTimeout(0);
 	}
 public void getFields()
@@ -62,9 +65,10 @@ public void getFields()
 			String block1String, block2String;
 			Location block1, block2;
 			World world;
-
+			String greeting;
+			
 			try 
-			{			
+			{	
 				Connection myConn = dataSource.getConnection();
 				PreparedStatement myStatement = myConn.prepareStatement("SELECT * FROM ProtectionFields;");
 				ResultSet fieldsResult = myStatement.executeQuery();
@@ -74,7 +78,7 @@ public void getFields()
 					name = fieldsResult.getString("field_name");
 					owner = UUID.fromString(fieldsResult.getString("Owner"));
 					block1String = fieldsResult.getString("block1");
-					world = plugin.getServer().getWorld(fieldsResult.getString("World"));
+					world = plugin.getServer().getWorld(fieldsResult.getString("World"));				
 					String[] block1Coords = block1String.split(",");
 					block1 = new Location(world, Double.parseDouble(block1Coords[0]),Double.parseDouble(block1Coords[1]),Double.parseDouble(block1Coords[2]));
 					
@@ -101,11 +105,13 @@ public void getFields()
 					fieldToAdd.setArea();
 					plugin.fields.add(fieldToAdd);
 					
+					
 				}
+				myConn.close();
 			} 
 			catch (SQLException e) 
 			{
-				e.printStackTrace();
+				e.printStackTrace();	
 			}
 			
 		}});
@@ -132,9 +138,10 @@ public void getFields()
 					Location block2 = field.getBlock2();
 					String block2String = block2.getBlockX() + "," + block2.getBlockY() + "," + block2.getBlockZ();
 					myStatement.setString(4, block2String);
-					myStatement.setString(5, field.getWorld().getName());
+					myStatement.setString(5, field.getWorld().getName());			
 					myStatement.execute();
-					
+					myConn.close();
+					Bukkit.getLogger().info("Field added to database successfully");
 					
 				}
 				catch(Exception e)
@@ -162,6 +169,7 @@ public void getFields()
 					myStatement.setString(2, field.getName());
 					myStatement.setString(3, field.getOwner().toString());
 					myStatement.execute();
+					myConn.close();
 					
 				}
 				catch(Exception e)
@@ -187,6 +195,7 @@ public void getFields()
 					myStatement.setString(2, field.getName());
 					myStatement.setString(3, field.getOwner().toString());
 					myStatement.execute();
+					myConn.close();
 					
 					
 				}
@@ -216,19 +225,16 @@ public void getFields()
 					//Remove all members of deleted field from the field members table
 				
 					myStatement = myConn.prepareStatement("DELETE FROM FieldMembers WHERE field_name = ? AND field_owner=?;");						
-					myStatement.setString(1, field.getName());
+		    		myStatement.setString(1, field.getName());
 					myStatement.setString(2, field.getOwner().toString());
-					myStatement.execute();
+					myStatement.execute();	
 					
-					
-					
-				
-					
+					myConn.close();
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					Bukkit.getLogger().info("FAILED to remove field from DB");
+					Bukkit.getLogger().info("FAILED to remove field from DB");					
 				}
 			}
 		});
@@ -250,14 +256,24 @@ public void getFields()
 					{
 						Bukkit.getLogger().info("player doesnt exist in DB, creating entry");
 						//player doesnt exist, create them
-						myStatement = myConn.prepareStatement("INSERT INTO player_data " + "VALUES (?,?,?,?,1,?,0,0,0,0,0,0,0,0,0,0,0,0,0)");
+						myStatement = myConn.prepareStatement("INSERT INTO player_data " + "VALUES (?,?,?,?,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15625,15625)");
 						myStatement.setString(1, player.getUniqueId().toString());
 						myStatement.setString(2, player.getName());
 						myStatement.setString(3, LocalDateTime.now().toString());
 						myStatement.setString(4, LocalDateTime.now().toString());
-						myStatement.setInt(5, (int) java.lang.System.currentTimeMillis());
+						
+						
+						Bukkit.getLogger().info("Creating new player object from data");
+						//create smp player object
+						SMPplayer toAdd = new SMPplayer(player, player.getUniqueId(), player.getName(), LocalDateTime.now().toString(), LocalDateTime.now().toString(), 1, 0, 0, 0, 0,0 , 0,
+								0, 0, 0, 0, 0, 0, 0, 0, 15625, 15625);
+						//set layer login time
+						toAdd.loginTime = (int) (System.currentTimeMillis());
+						//Put smp player into the hashmap
+						plugin.players.put(player.getUniqueId(), toAdd);
 						
 						myStatement.execute();
+						myConn.close();
 					}
 					else
 					{	
@@ -268,7 +284,7 @@ public void getFields()
 						String join_date = playerResult.getString("join_date");
 						String last_online = playerResult.getString("last_online");
 						int total_logins = playerResult.getInt("total_logins");
-						String time_online = playerResult.getString("time_online");
+						int time_online = playerResult.getInt("time_online");
 						int total_votes = playerResult.getInt("total_votes");
 						int blocks_placed = playerResult.getInt("blocks_placed");
 						int blocks_broken = playerResult.getInt("blocks_broken");
@@ -282,10 +298,74 @@ public void getFields()
 						int fish_caught = playerResult.getInt("fish_caught");
 						int items_enchanted = playerResult.getInt("items_enchanted");
 						int animals_bred = playerResult.getInt("animals_bred");
+						int protection_blocks_left = playerResult.getInt("protection_blocks_left");
+						int protection_blocks_max = playerResult.getInt("protection_blocks_max");
 						
-						SMPplayer toAdd = new SMPplayer(UUID.fromString(uuid), name, join_date, last_online, total_logins, time_online, total_votes, blocks_placed, blocks_broken, lines_spoken, damage_dealt,
-								damage_received, players_killed, monsters_killed, animals_killed, total_deaths, fish_caught, items_enchanted, animals_bred);
-						plugin.players.add(toAdd);
+
+						Bukkit.getLogger().info("Creating new player object from data");
+						//create smp player object
+						SMPplayer toAdd = new SMPplayer(player, UUID.fromString(uuid), name, join_date, last_online, total_logins, time_online, total_votes, blocks_placed, blocks_broken, lines_spoken, damage_dealt,
+								damage_received, players_killed, monsters_killed, animals_killed, total_deaths, fish_caught, items_enchanted, animals_bred, protection_blocks_left, protection_blocks_max);
+						//set layer login time
+						toAdd.loginTime = (int) (System.currentTimeMillis());
+						//Put smp player into the hashmap
+						plugin.players.put(player.getUniqueId(), toAdd);		
+						Bukkit.getLogger().info("player retrieved from the DB");
+						myConn.close();
+						
+						PermissionUser user = PermissionsEx.getUser(player);
+						Bukkit.getLogger().info("Prefix is: " + user.getPrefix());
+						List<String> groups = user.getParentIdentifiers();
+						Bukkit.getLogger().info("Rank is is: " + groups.get(0));
+						
+						// Check joining players stats to see if they should be promoted
+						if(groups.get(0).equalsIgnoreCase("Guest"))
+						{
+							Bukkit.getLogger().info("player is a guest");
+							//Check if they should be promoted to Member
+							if((toAdd.getTime_online() >= 7200000))
+							{
+								user.addGroup("Member");
+							}
+							
+						}
+						else if(groups.get(0).equalsIgnoreCase("Member"))
+						{
+							Bukkit.getLogger().info("player is a member");
+							//Check if they should be promoted to Resident
+							if((toAdd.getTime_online() >= 28800000) && ((toAdd.getBlocks_broken() + toAdd.getBlocks_placed()) >= 10000) && (toAdd.getMonsters_killed() >= 90))
+							{
+								user.addGroup("Resident");
+								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 7812);
+								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 7812);
+							}
+							
+							
+						}
+						else if(groups.get(0).equalsIgnoreCase("Resident"))
+						{
+							Bukkit.getLogger().info("player is a resident");
+							//Check if they should be promoted to Citizen
+							if((toAdd.getTime_online() >= 86400000) && ((toAdd.getBlocks_broken() + toAdd.getBlocks_placed()) >= 30000) && (toAdd.getMonsters_killed() >= 275))
+							{
+								user.addGroup("Citizen");
+								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 11718);
+								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 11718);
+							}
+							
+						}
+						else if(groups.get(0).equalsIgnoreCase("Citizen"))
+						{
+							Bukkit.getLogger().info("player is a citizen");
+							//Check if they should be promoted to Veteran
+							if((toAdd.getTime_online() >= 360000000) && ((toAdd.getBlocks_broken() + toAdd.getBlocks_placed()) >= 125000) && (toAdd.getMonsters_killed() >= 1120))
+							{
+								user.addGroup("Veteran");
+								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 17577);
+								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 17577);
+							}
+							
+						}
 						
 					}
 					
@@ -306,13 +386,15 @@ public void getFields()
 			{
 				try
 				{
+					Bukkit.getLogger().info("Attempting to save player to the DB");
 					Connection myConn = dataSource.getConnection();
-					PreparedStatement myStatement = myConn.prepareStatement("UPDATE player_data SET current_name=?,last_online=?, total_logins=?,time_online=?,total_votes=?, blocks_placed=?, blocks_broken=?" +
-							"lines_spoken=?, damage_dealt=?, damage_received=?, players_killed=?, monsters_killed=?, animals_killed=?, total_deaths=?, fish_caight=?, items_enchanted=?, animals_bred=? WHERE uuid = ?;");
+					Bukkit.getLogger().info("After connection grabbed");
+					PreparedStatement myStatement = myConn.prepareStatement("UPDATE player_data SET current_name=?, last_online=?, total_logins=?,time_online=?,total_votes=?, blocks_placed=?, blocks_broken=?, lines_spoken=?, damage_dealt=?, damage_received=?, players_killed=?, monsters_killed=?, animals_killed=?, total_deaths=?, fish_caught=?, items_enchanted=?, animals_bred=?, protection_blocks_left=?, protection_blocks_max=? WHERE uuid = ?;");
+					Bukkit.getLogger().info("After prepared statement");
 					myStatement.setString(1,player.getName());
 					myStatement.setString(2,player.getLast_online());
 					myStatement.setInt(3,player.getTotal_logins());
-					myStatement.setString(4,player.getTime_online());
+					myStatement.setInt(4,player.getTime_online());
 					myStatement.setInt(5,player.getTotal_votes());
 					myStatement.setInt(6,player.getBlocks_placed());
 					myStatement.setInt(7,player.getBlocks_broken());
@@ -325,12 +407,14 @@ public void getFields()
 					myStatement.setInt(14, player.getTotal_deaths());
 					myStatement.setInt(15, player.getFish_caught());
 					myStatement.setInt(16, player.getItems_enchanted());
-					myStatement.setInt(17, player.getAnimals_bred());
-					myStatement.setString(18, player.getUuid().toString());
-					myStatement.executeQuery();
-						
-					
-					
+					myStatement.setInt(17, player.getAnimals_bred());			
+					myStatement.setInt(18, player.getProtectionBlocksLeft());
+					myStatement.setInt(19, player.getProtectionBlocksMax());
+					myStatement.setString(20, player.getUuid().toString());
+					Bukkit.getLogger().info("Before execute query");
+					myStatement.executeUpdate();	
+					Bukkit.getLogger().info("player updated in the DB");
+					myConn.close();
 				}
 				catch(Exception e)
 				{
@@ -339,6 +423,47 @@ public void getFields()
 				}
 			}
 		});
+	}
+	public void savePlayerShutdown(SMPplayer player)
+	{
+		Bukkit.getLogger().info("Attempting to save player to the DB after unexpected shutdown");
+		try 
+		{
+			Bukkit.getLogger().info("Attempting to save player to the DB");
+			Connection myConn = dataSource.getConnection();
+			Bukkit.getLogger().info("After connection grabbed");
+			PreparedStatement myStatement = myConn.prepareStatement("UPDATE player_data SET current_name=?, last_online=?, total_logins=?,time_online=?,total_votes=?, blocks_placed=?, blocks_broken=?, lines_spoken=?, damage_dealt=?, damage_received=?, players_killed=?, monsters_killed=?, animals_killed=?, total_deaths=?, fish_caught=?, items_enchanted=?, animals_bred=?, protection_blocks_left=?, protection_blocks_max=? WHERE uuid = ?;");
+			Bukkit.getLogger().info("After prepared statement");
+			myStatement.setString(1,player.getName());
+			myStatement.setString(2,player.getLast_online());
+			myStatement.setInt(3,player.getTotal_logins());
+			myStatement.setInt(4,player.getTime_online());
+			myStatement.setInt(5,player.getTotal_votes());
+			myStatement.setInt(6,player.getBlocks_placed());
+			myStatement.setInt(7,player.getBlocks_broken());
+			myStatement.setInt(8,player.getLines_spoken());
+			myStatement.setInt(9,player.getDamage_dealt());
+			myStatement.setInt(10,player.getDamage_received());
+			myStatement.setInt(11, player.getPlayers_killed());
+			myStatement.setInt(12, player.getMonsters_killed());
+			myStatement.setInt(13, player.getAnimlas_killed());
+			myStatement.setInt(14, player.getTotal_deaths());
+			myStatement.setInt(15, player.getFish_caught());
+			myStatement.setInt(16, player.getItems_enchanted());
+			myStatement.setInt(17, player.getAnimals_bred());			
+			myStatement.setInt(18, player.getProtectionBlocksLeft());
+			myStatement.setInt(19, player.getProtectionBlocksMax());
+			myStatement.setString(20, player.getUuid().toString());
+			Bukkit.getLogger().info("Before execute query");
+			myStatement.executeUpdate();	
+			Bukkit.getLogger().info("player updated in the DB");
+			myConn.close();			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			Bukkit.getLogger().info("FAILED to save player");
+		}
 	}
 	public void closeConnections()
 	{

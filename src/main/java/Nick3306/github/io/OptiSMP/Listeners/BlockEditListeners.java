@@ -27,49 +27,14 @@ public class BlockEditListeners implements Listener
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) 
 	{
+		
+		//Used to be used for building restictions but not anymore
+		/*
 		Player player = event.getPlayer();
 		Location loc = player.getLocation();
 		Action action = event.getAction();
 		String world = player.getWorld().getName();
-		if (action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK)
-		{
-			//Player tried to place or break a block, check to make sure block is not in pfield.
-			Location blockInteracted;
-			
-			blockInteracted = event.getClickedBlock().getLocation();
-			
-			if(this.plugin.protectUtil.inField(blockInteracted))
-			{			
-				ProtectionField pField = util.getPField(blockInteracted);
-				if(!pField.isMember(player) && !player.getUniqueId().toString().equals(pField.getOwner().toString()) && !player.hasPermission("optiSMP.protect.staff"))
-				{
-					// Player is not allowed to build in field, check flags
-					
-					//Chest Access flag
-					if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
-					{
-						if(event.getClickedBlock().getType().equals(Material.CHEST))
-						{
-							if(pField.getChestFlag() == true)
-							{
-								return;
-							}
-							else
-							{
-								player.sendMessage(ChatColor.RED + "You are not allowed in chests here");
-								event.setCancelled(true);
-							}
-						}
-					}
+		*/
 
-					player.sendMessage("You are not allowed to build here!");
-					event.setCancelled(true);
-				}
-				else
-				{
-					//They are a member, let them build
-				}
-			}
-		}
 	}
 }

@@ -1,6 +1,10 @@
 package Nick3306.github.io.OptiSMP.Utilities;
+import java.util.ArrayList;
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
 
 public class SMPplayer
@@ -8,15 +12,20 @@ public class SMPplayer
 	UUID uuid;
 	String name;
 	boolean pvp = false;
+	Player player;
+	
+	private ProtectUtilities util;
 	// currency for later
 	int points;
-	ProtectionField lastField = new ProtectionField(null, null, null, null, "none");
+	
+	//ProtectionField lastField = new ProtectionField(null, null, null, null, "none");	
+	public ArrayList<ProtectionField> protectionFields = new ArrayList<ProtectionField>();
 	
 	// stats
 	private String join_date;
 	private String last_online;
 	private int total_logins;
-	private String time_online;
+	private int time_online;
 	private int total_votes;
 	private int blocks_placed;
 	private int blocks_broken;
@@ -30,20 +39,24 @@ public class SMPplayer
 	private int fish_caught;
 	private int items_enchanted;
 	private int animals_bred;
-	
-	
-	
-	public SMPplayer(UUID uuid, String name, String join_date, String last_online, int total_logins, String time_online,
+	private int protection_blocks_left;
+	private int protection_blocks_max;
+	public int loginTime;
+	String lastField = "none";
+		
+	public SMPplayer(Player player, UUID uuid, String name, String join_date, String last_online, int total_logins, int time_online,
 			int total_votes, int blocks_placed, int blocks_broken, int lines_spoken, int damage_dealt,
 			int damage_received, int players_killed, int monsters_killed, int animlas_killed, int total_deaths,
-			int fish_caught, int items_enchanted, int animals_bred)
+			int fish_caught, int items_enchanted, int animals_bred, int protection_blocks_left, int protection_blocks_max)
 	{
 		super();
+		this.player = player;
 		this.uuid = uuid;
 		this.name = name;
 		this.join_date = join_date;
 		this.last_online = last_online;
-		this.total_logins = total_logins;
+		//This constructer means player logged in so increment their total logins
+		this.total_logins = total_logins +1 ;
 		this.time_online = time_online;
 		this.total_votes = total_votes;
 		this.blocks_placed = blocks_placed;
@@ -58,6 +71,8 @@ public class SMPplayer
 		this.fish_caught = fish_caught;
 		this.items_enchanted = items_enchanted;
 		this.animals_bred = animals_bred;
+		this.protection_blocks_left = protection_blocks_left;
+		this.protection_blocks_max = protection_blocks_max;
 	}
 
 
@@ -97,13 +112,13 @@ public class SMPplayer
 	}
 
 
-	public String getTime_online()
+	public int getTime_online()
 	{
 		return time_online;
 	}
 
 
-	public void setTime_online(String time_online)
+	public void setTime_online(int time_online)
 	{
 		this.time_online = time_online;
 	}
@@ -298,13 +313,46 @@ public class SMPplayer
 	{
 		this.pvp = pvp;
 	}
-	public void setLastField(ProtectionField field)
+	
+	public int getProtectionBlocksLeft()
 	{
-		lastField = field;
+		return protection_blocks_left;
 	}
-	public ProtectionField getLastField()
+	
+	public void setProtectionBlocksLeft(int blocks)
+	{
+		protection_blocks_left = blocks;
+	}
+	public int getProtectionBlocksMax()
+	{
+		return protection_blocks_max;
+	}
+	
+	public void setProtectionBlocksMax(int blocks)
+	{
+		protection_blocks_max = blocks;
+	}
+	public ArrayList<ProtectionField> getPFields()
+	{
+		return protectionFields;
+	}
+	public void removeField(ProtectionField field)
+	{
+		for(ProtectionField listField : protectionFields)
+		{
+			if(field.getName().equals(listField.getName()))
+			{
+				protectionFields.remove(listField);
+			}
+		}
+	}
+	public void setLastField(String infield)
+	{
+		lastField = infield;
+	}
+	public String getLastField()
 	{
 		return lastField;
 	}
-	
+
 }

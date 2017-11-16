@@ -14,15 +14,9 @@ public class GeneralUtilities
 	}
 	public SMPplayer getSMPPlayer(Player player)
 	{
-		for(SMPplayer playerInList : plugin.players)
-		{
-			if (playerInList.uuid.equals(player.getUniqueId()))
-			{
-				return playerInList;
-			}
-		}
-		return null;
+		return plugin.players.get(player.getUniqueId());
 	}
+	/*
 	public void updateLastField(SMPplayer player)
 	{
 		for(SMPplayer playerInList : plugin.players)
@@ -33,4 +27,5 @@ public class GeneralUtilities
 			}
 		}
 	}
+	*/
 }

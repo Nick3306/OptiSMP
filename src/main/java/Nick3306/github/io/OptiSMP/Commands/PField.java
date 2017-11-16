@@ -1,6 +1,8 @@
 package Nick3306.github.io.OptiSMP.Commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,8 +16,10 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import Nick3306.github.io.OptiSMP.Main;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
+import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
+import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
+import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
 import net.minecraft.server.v1_12_R1.EnumParticle;
 import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
 
@@ -23,12 +27,14 @@ import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
 public class PField implements CommandExecutor
 {
 	private Main plugin;
-	private ProtectUtilities util;
+	private ProtectUtilities proUtil;
+	private GeneralUtilities util;
 	public HashMap<String, ProtectionField> waitingResponse = new HashMap<String, ProtectionField>();
 	public PField(Main plugin)
 	{
 	   this.plugin = plugin;
-	   this.util = this.plugin.protectUtil;
+	   this.util =  this.plugin.util;		   
+	   this.proUtil = this.plugin.protectUtil;
 	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2lable, String[] args) 
@@ -46,6 +52,7 @@ public class PField implements CommandExecutor
 				player.sendMessage(ChatColor.GREEN + "/pfield info <fieldname>: Get info about a specific pfield you own");
 				player.sendMessage(ChatColor.GREEN + "/pfield addmember <playername> <fieldname>: Add specified player to the pfield you are standing in");
 				player.sendMessage(ChatColor.GREEN + "/pfield removemember <playername> <fieldname>: Remove specified player from the pfield you are standing in");
+				player.sendMessage(ChatColor.GREEN + "/pfield list: Get a list of your current protection fields");
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("Create"))
@@ -59,7 +66,7 @@ public class PField implements CommandExecutor
 				{
 					
 					ProtectionField newField = new ProtectionField(player.getWorld(),null, null, player.getUniqueId(), args[1]);
-					if(!util.duplicateName(newField))
+					if(!proUtil.duplicateName(newField))
 					{
 						plugin.newFields.add(newField);					
 						player.sendMessage(ChatColor.GREEN + "Place the first block to define the field");
@@ -78,13 +85,19 @@ public class PField implements CommandExecutor
 				if(args.length == 1)
 				{
 					Location loc = player.getLocation();			
-					ProtectionField field = util.getPField(loc);
+					ProtectionField field = proUtil.getPField(loc);
 					if(field != null)
 					{
 						player.sendMessage(ChatColor.GREEN + "Name: " + ChatColor.YELLOW + field.getName());
 						player.sendMessage(ChatColor.GREEN + "Owner: " + ChatColor.YELLOW + Bukkit.getOfflinePlayer(field.getOwner()).getName());
 						player.sendMessage(ChatColor.GREEN + "Area: " + ChatColor.YELLOW + field.getArea() + " blocks");
-						util.highlightField(field, player);
+						String members = "";
+						for(UUID member : field.members)
+						{
+							members = members + plugin.getServer().getOfflinePlayer(member) + ", ";
+						}
+						player.sendMessage(ChatColor.GREEN + "Members: " + members);
+						proUtil.highlightField(field, player);
 					}
 					else
 					{
@@ -94,7 +107,7 @@ public class PField implements CommandExecutor
 				}
 				if(args.length == 2)
 				{
-					ProtectionField field = util.getPFieldByName(player.getUniqueId(), args[1]);
+					ProtectionField field = proUtil.getPFieldByName(player.getUniqueId(), args[1]);
 					if(field != null)
 					{
 						player.sendMessage(ChatColor.GREEN + "Name: " + ChatColor.YELLOW + field.getName());
@@ -102,7 +115,7 @@ public class PField implements CommandExecutor
 						player.sendMessage(ChatColor.GREEN + "Area: " + ChatColor.YELLOW + field.getArea() + " blocks");
 						player.sendMessage(ChatColor.GREEN + "World: " + ChatColor.YELLOW + field.getWorld().getName());
 						player.sendMessage(ChatColor.GREEN + "Location: " + ChatColor.YELLOW + field.getBlock1().toString());
-						//util.highlightField(field, player);
+						//proUtil.highlightField(field, player);
 					}
 					else
 					{
@@ -121,7 +134,7 @@ public class PField implements CommandExecutor
 				}
 				if(args.length == 3)
 				{
-					ProtectionField field = util.getPFieldByName(player.getUniqueId(), args[2]);			
+					ProtectionField field = proUtil.getPFieldByName(player.getUniqueId(), args[2]);			
 					if(field == null)
 					{
 						player.sendMessage(ChatColor.RED + "You do not have a field by that name!");
@@ -164,7 +177,7 @@ public class PField implements CommandExecutor
 				}
 				if(args.length == 3)
 				{
-					ProtectionField field = util.getPFieldByName(player.getUniqueId(), args[2]);
+					ProtectionField field = proUtil.getPFieldByName(player.getUniqueId(), args[2]);
 					if(field == null)
 					{
 						player.sendMessage(ChatColor.RED + "You do not have a field by this name!");
@@ -200,9 +213,11 @@ public class PField implements CommandExecutor
 				if(args.length != 1)
 				{
 					player.sendMessage(ChatColor.RED + "Incorrect usage: /pfield remove");
+					player.sendMessage(ChatColor.RED + "Remember, you must be standing in your field to remove it");
+					return false;
 				}
 				Location loc = player.getLocation();			
-				ProtectionField field = util.getPField(loc);
+				ProtectionField field = proUtil.getPField(loc);
 				if(field != null)
 				{
 					if(field.getOwner().toString().equals(player.getUniqueId().toString()) || player.hasPermission("optiSMP.protect.staff"))
@@ -228,11 +243,15 @@ public class PField implements CommandExecutor
 				if(waitingResponse.get(player.getName()) != null)
 				{
 					ProtectionField fieldToRemove = waitingResponse.get(player.getName());
+					//remove field from database
 					plugin.sql.removeField(fieldToRemove);
-					util.removeField(fieldToRemove);
+					//remove field from plugins list of total fields
+					proUtil.removeField(fieldToRemove);
+					SMPplayer smpPlayer = util.getSMPPlayer(player);
+					//give the player back the number of protected blocks for the field removed
+					smpPlayer.setProtectionBlocksLeft(smpPlayer.getProtectionBlocksLeft() + fieldToRemove.getArea());
 					waitingResponse.remove(player.getName());
 					player.sendMessage(ChatColor.GREEN + "Field Removed");
-					//Bukkit.getLogger().info("Size after command returns is: " + util.sizeOfFields());
 					return true;
 				}
 				else
@@ -258,10 +277,10 @@ public class PField implements CommandExecutor
 			}
 			if(args[0].equalsIgnoreCase("visualize"))
 			{
-				ProtectionField field = util.getPField(player.getLocation());
+				ProtectionField field = proUtil.getPField(player.getLocation());
 				if(field != null)
 				{
-					util.highlightField(field, player);
+					proUtil.highlightField(field, player);
 					player.sendMessage(ChatColor.GREEN + "Field is now visualized");
 				}
 				else
@@ -270,7 +289,61 @@ public class PField implements CommandExecutor
 					return false;
 				}
 			}
+			if(args[0].equalsIgnoreCase("list"))
+			{	
+				player.sendMessage(ChatColor.GREEN + "Fields:");
+				SMPplayer smpPlayer = util.getSMPPlayer(player);
+				ArrayList<ProtectionField> playerFields = smpPlayer.getPFields();
+				int count = 1;
+				for(ProtectionField field : plugin.fields)
+				{
+					if(field.getOwner().equals(player.getUniqueId()))
+					{
+						player.sendMessage(ChatColor.GREEN + Integer.toString(count) + ". " + field.getName());
+						count++;
+					}
+				}	
+				return true;
+			}
+			if(args[0].equalsIgnoreCase("members"))
+			{
+				if(args.length == 2)
+				{
+					ProtectionField field = proUtil.getPFieldByName(player.getUniqueId(), args[1]);					
+					if(field != null)
+					{
+						if(field.members.size() != 0)
+						{
+							for(UUID uuid : field.members)
+							{
+								player.sendMessage(ChatColor.GREEN + Bukkit.getOfflinePlayer(uuid).getName());
+							}
+							return true;
+						}						
+						else
+						{
+							player.sendMessage(ChatColor.RED + "That field has no members!");
+							return false;
+						}
+					}
+					else
+					{
+						player.sendMessage(ChatColor.RED + "You do not have a field by that name!");
+						return false;
+					}
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "Incorrect usage! /pfield members <fieldname>");
+					return false;
+				}
+			}
 		}
+		if(args[0].equalsIgnoreCase("flag"))
+		{
+			
+		}
+		
 		return false;
 	}
 	

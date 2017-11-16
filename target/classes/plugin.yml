@@ -1,9 +1,14 @@
 name: OptiSMP
 main: Nick3306.github.io.OptiSMP.Main
-version: .01
+version: 1.0
 commands:
    pfield:
       description: OptiSMP
+      usage:
+      permission: 
+      permission-message: You do not have permission to use this command!
+   stats:
+      description: stats
       usage:
       permission: 
       permission-message: You do not have permission to use this command!
