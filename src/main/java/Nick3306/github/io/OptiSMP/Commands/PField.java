@@ -243,13 +243,15 @@ public class PField implements CommandExecutor
 				if(waitingResponse.get(player.getName()) != null)
 				{
 					ProtectionField fieldToRemove = waitingResponse.get(player.getName());
-					//remove field from database
-					plugin.sql.removeField(fieldToRemove);
-					//remove field from plugins list of total fields
-					proUtil.removeField(fieldToRemove);
+					
 					SMPplayer smpPlayer = util.getSMPPlayer(player);
 					//give the player back the number of protected blocks for the field removed
 					smpPlayer.setProtectionBlocksLeft(smpPlayer.getProtectionBlocksLeft() + fieldToRemove.getArea());
+					
+					//remove field from database
+					plugin.sql.removeField(fieldToRemove);
+					//remove field from plugins list of total fields
+					proUtil.removeField(fieldToRemove);	
 					waitingResponse.remove(player.getName());
 					player.sendMessage(ChatColor.GREEN + "Field Removed");
 					return true;

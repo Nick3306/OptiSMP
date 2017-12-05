@@ -310,6 +310,7 @@ public void getFields()
 								damage_received, players_killed, monsters_killed, animals_killed, total_deaths, fish_caught, items_enchanted, animals_bred, protection_blocks_left, protection_blocks_max);
 						//set layer login time
 						toAdd.loginTime = (int) (System.currentTimeMillis());
+						toAdd.setLast_online(LocalDateTime.now().toString());
 						//Put smp player into the hashmap
 						plugin.players.put(player.getUniqueId(), toAdd);		
 						Bukkit.getLogger().info("player retrieved from the DB");
@@ -328,6 +329,7 @@ public void getFields()
 							if((toAdd.getTime_online() >= 7200000))
 							{
 								user.addGroup("Member");
+								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
 							}
 							
 						}
@@ -340,6 +342,7 @@ public void getFields()
 								user.addGroup("Resident");
 								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 7812);
 								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 7812);
+								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
 							}
 							
 							
@@ -353,6 +356,7 @@ public void getFields()
 								user.addGroup("Citizen");
 								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 11718);
 								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 11718);
+								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
 							}
 							
 						}
@@ -365,6 +369,7 @@ public void getFields()
 								user.addGroup("Veteran");
 								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 17577);
 								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 17577);
+								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
 							}
 							
 						}

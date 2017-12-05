@@ -1,6 +1,7 @@
 package Nick3306.github.io.OptiSMP.Listeners;
 
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -47,6 +48,26 @@ public class EntityDeathListener implements Listener
 					smpPlayer.setAnimlas_killed(smpPlayer.getAnimlas_killed() + 1);
 				}
             }
+			else if(nEvent.getDamager() instanceof Arrow)
+			{
+				Arrow arrow = (Arrow)nEvent.getDamager();
+				if(arrow.getShooter() instanceof Player) 
+				{
+			        Player player = (Player) arrow.getShooter();
+			    					
+			        SMPplayer smpPlayer = util.getSMPPlayer(player);             
+			        if(e instanceof Monster)
+			        {		
+			        	// player killed a monster increment monsters killed
+			        	smpPlayer.setMonsters_killed(smpPlayer.getMonsters_killed() + 1);
+			        }
+			        if(e instanceof Animals)
+			        {
+			        	//player killed an animal increment animals killed
+			        	smpPlayer.setAnimlas_killed(smpPlayer.getAnimlas_killed() + 1);
+			        }
+				}
+			}
         }
      }
 }
