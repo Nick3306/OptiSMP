@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -471,6 +472,72 @@ public void getFields()
 			e.printStackTrace();
 			Bukkit.getLogger().info("FAILED to save player");
 		}
+	}
+	
+	
+	public void getPlayerByUUID(final UUID uuid, final Player player)
+	{
+		Bukkit.getScheduler().runTaskAsynchronously(this.plugin, new Runnable()
+		{
+			public void run() 
+			{
+				try
+				{
+					Bukkit.getLogger().info("Attempting to get player from the DB by UUID");
+					Connection myConn = dataSource.getConnection();
+					Bukkit.getLogger().info("After connection grabbed");
+					PreparedStatement myStatement = myConn.prepareStatement("SELECT * FROM player_data WHERE uuid = ?;");
+					myStatement.setString(1, uuid.toString());
+					ResultSet playerResult = myStatement.executeQuery();
+					if(playerResult.next())
+					{
+						String current_name = playerResult.getString("current_name");
+						String join_date = playerResult.getString("join_date");
+						String last_online = playerResult.getString("last_online");
+						int total_logins = playerResult.getInt("total_logins");
+						int time_online = playerResult.getInt("time_online");
+						int total_votes = playerResult.getInt("total_votes");
+						int blocks_placed = playerResult.getInt("blocks_placed");
+						int blocks_broken = playerResult.getInt("blocks_broken");
+						int lines_spoken = playerResult.getInt("lines_spoken");
+						int damage_dealt = playerResult.getInt("damage_dealt");
+						int damage_received = playerResult.getInt("damage_received");
+						int players_killed = playerResult.getInt("players_killed");
+						int monsters_killed = playerResult.getInt("monsters_killed");
+						int animals_killed = playerResult.getInt("animals_killed");
+						int total_deaths = playerResult.getInt("total_deaths");
+						int fish_caught = playerResult.getInt("fish_caught");
+						int items_enchanted = playerResult.getInt("items_enchanted");
+						int animals_bred = playerResult.getInt("animals_bred");
+					
+					
+						player.sendMessage(ChatColor.GREEN + "Stats for player " + current_name);
+						player.sendMessage(ChatColor.YELLOW + "Join Date: " + join_date);
+						player.sendMessage(ChatColor.YELLOW + "Last Online: " + last_online);
+						player.sendMessage(ChatColor.YELLOW + "Total Logins: " + total_logins);					
+						long second = (time_online / 1000) % 60;
+						long minute = (time_online  / (1000 * 60)) % 60;
+						long hour = (time_online / (1000 * 60 * 60));
+						String time = (hour + " hours " + minute + " minutes " +  second + " seconds.");
+						player.sendMessage(ChatColor.YELLOW + "Time Online: " + time);
+						player.sendMessage(ChatColor.YELLOW + "lines_spoken: " + lines_spoken);
+						player.sendMessage(ChatColor.YELLOW + "Blocks Placed: " + blocks_placed);
+						player.sendMessage(ChatColor.YELLOW + "Blocks Broken: " + blocks_broken);
+						player.sendMessage(ChatColor.YELLOW + "Players Killed: " + players_killed);
+						player.sendMessage(ChatColor.YELLOW + "Monsters Killed: " + monsters_killed);
+						player.sendMessage(ChatColor.YELLOW + "Animals Killed: " + animals_killed);
+						player.sendMessage(ChatColor.YELLOW + "Total Deaths: " + total_deaths);
+					}
+					Bukkit.getLogger().info("player grabbed from the DB");
+					myConn.close();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					Bukkit.getLogger().info("FAILED toget player stats from DB");
+				}
+			}
+		});		
 	}
 	public void closeConnections()
 	{

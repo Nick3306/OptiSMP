@@ -29,12 +29,17 @@ public class BlockEditListeners implements Listener
 	{
 		
 		//Used to be used for building restictions but not anymore
-		/*
+		
 		Player player = event.getPlayer();
 		Location loc = player.getLocation();
 		Action action = event.getAction();
 		String world = player.getWorld().getName();
-		*/
+		
+		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK)
+		{
+			
+		}
+		
 
 	}
 }

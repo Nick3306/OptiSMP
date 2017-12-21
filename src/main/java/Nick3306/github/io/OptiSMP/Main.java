@@ -25,7 +25,10 @@ import Nick3306.github.io.OptiSMP.Listeners.BlockPlaceListener;
 import Nick3306.github.io.OptiSMP.Listeners.BucketEmptyListener;
 import Nick3306.github.io.OptiSMP.Listeners.ChatListener;
 import Nick3306.github.io.OptiSMP.Listeners.EnchantItemListener;
+import Nick3306.github.io.OptiSMP.Listeners.EntityDamageListener;
 import Nick3306.github.io.OptiSMP.Listeners.EntityDeathListener;
+import Nick3306.github.io.OptiSMP.Listeners.HangingBreakEvent;
+import Nick3306.github.io.OptiSMP.Listeners.InteractEntityListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerDeathListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerFishListener;
 import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
@@ -74,6 +77,9 @@ public class Main extends JavaPlugin
 		pm.registerEvents(new EntityDeathListener(this), this);
 		pm.registerEvents(new ChatListener(this), this);
 		pm.registerEvents(new BucketEmptyListener(this), this);
+		pm.registerEvents(new EntityDamageListener(this), this);
+		pm.registerEvents(new HangingBreakEvent(this), this);
+		pm.registerEvents(new InteractEntityListener(this), this);
 		
 		
 		getCommand("pfield").setExecutor(new PField(this));
