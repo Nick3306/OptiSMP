@@ -76,7 +76,7 @@ public class Stats implements CommandExecutor
 					long hour = (timeOnline / (1000 * 60 * 60));
 					
 					String time = (hour + " hours " + minute + " minutes " +  second + " seconds.");
-					player.sendMessage(ChatColor.GREEN + "Stats for player " + player.getName());
+					player.sendMessage(ChatColor.GREEN + "Stats for player " + smpPlayer.getName());
 					player.sendMessage(ChatColor.YELLOW + "Join Date: " + smpPlayer.getJoin_date());
 					player.sendMessage(ChatColor.YELLOW + "Last Online: " + smpPlayer.getLast_online());
 					player.sendMessage(ChatColor.YELLOW + "Total Logins: " + smpPlayer.getTotal_logins());
