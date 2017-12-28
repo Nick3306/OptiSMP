@@ -7,6 +7,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -29,27 +30,23 @@ public class EntityDamageListener implements Listener
 	   this.proUtil = this.plugin.protectUtil;
 	}
 	
-	
+	@EventHandler
 	public void onDamageEntity(EntityDamageByEntityEvent event)
 	{
 		Entity entity = event.getEntity();
 		Location loc = entity.getLocation();
 		if(entity instanceof Animals || entity instanceof ItemFrame)
 		{	
-			Bukkit.getLogger().info("entity is animal o ritem frame");
 			if(proUtil.inField(loc))
-			{
-				Bukkit.getLogger().info("entity is in a field");						
+			{						
 				EntityDamageByEntityEvent nEvent = (EntityDamageByEntityEvent) entity.getLastDamageCause();
 				if(nEvent.getDamager() instanceof Player)
 				{
-					Bukkit.getLogger().info("damager was a player");
 					Player player = (Player) nEvent.getDamager();
 					ProtectionField pfield = proUtil.getPField(loc);
 					
 					if(pfield.members.contains(player.getUniqueId()) || pfield.getOwner().equals(player.getUniqueId()))
 					{
-						Bukkit.getLogger().info("player can damage mobs and item frames");
 						// player is allowed to kill innocent animals in this field
 						return;
 					}

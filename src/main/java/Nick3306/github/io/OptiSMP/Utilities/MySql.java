@@ -46,11 +46,7 @@ public class MySql
 	*/
 		
 		dataSource.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        dataSource.addDataSourceProperty("serverName", "127.0.0.1");
-        dataSource.addDataSourceProperty("port", "3306");
-        dataSource.addDataSourceProperty("databaseName", "mdb_2");
-        dataSource.addDataSourceProperty("user", "mdb_2");
-        dataSource.addDataSourceProperty("password", "3ad657fda1");
+		//
         dataSource.setMaximumPoolSize(15);
 	   // dataSource.setIdleTimeout(0);
 	}
