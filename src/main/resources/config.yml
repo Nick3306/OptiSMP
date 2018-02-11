@@ -1,2 +1,6 @@
-FieldID: 1
-PricePerBlock: 0
+mysql:
+  user: user
+  port: 3306
+  password: pass
+  host: localhost
+  database: database

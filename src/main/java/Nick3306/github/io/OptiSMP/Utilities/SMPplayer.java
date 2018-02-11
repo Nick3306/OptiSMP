@@ -43,6 +43,7 @@ public class SMPplayer
 	private int protection_blocks_max;
 	public int loginTime;
 	String lastField = "none";
+	private boolean regionMessages = true;
 		
 	public SMPplayer(Player player, UUID uuid, String name, String join_date, String last_online, int total_logins, int time_online,
 			int total_votes, int blocks_placed, int blocks_broken, int lines_spoken, int damage_dealt,
@@ -353,6 +354,21 @@ public class SMPplayer
 	public String getLastField()
 	{
 		return lastField;
+	}
+	public void toggleRegionMessages()
+	{
+		if(regionMessages == true)
+		{
+			this.regionMessages = false;
+		}
+		else 
+		{
+			this.regionMessages = true;
+		}
+	}
+	public boolean getRegionMessages() 
+	{
+		return this.regionMessages;
 	}
 
 }

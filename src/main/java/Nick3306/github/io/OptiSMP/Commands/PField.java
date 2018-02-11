@@ -210,34 +210,50 @@ public class PField implements CommandExecutor
 			}
 			if(args[0].equalsIgnoreCase("remove"))
 			{
-				if(args.length != 1)
+				if(args.length > 2)
 				{
-					player.sendMessage(ChatColor.RED + "Incorrect usage: /pfield remove");
-					player.sendMessage(ChatColor.RED + "Remember, you must be standing in your field to remove it");
+					player.sendMessage(ChatColor.RED + "Incorrect usage: /pfield remove <fieldname Optional>");
 					return false;
 				}
-				Location loc = player.getLocation();			
-				ProtectionField field = proUtil.getPField(loc);
-				if(field != null)
+				
+				ProtectionField field = null;
+				if(args.length == 1) {
+					Location loc = player.getLocation();			
+					field = proUtil.getPField(loc);
+				}
+				else if(args.length == 2)
 				{
-					if(field.getOwner().toString().equals(player.getUniqueId().toString()) || player.hasPermission("optiSMP.protect.staff"))
+					field = proUtil.getPFieldByName(player.getUniqueId(), args[1]);
+				}
+					if(field != null)
 					{
-						waitingResponse.put(player.getName(), field);
-						player.sendMessage(ChatColor.RED + "WARNING: You are about to delete this pfield. Type '/pfield yes' to confirm or '/pfield no' to cancel");
-						return true;
+						if(field.getOwner().toString().equals(player.getUniqueId().toString()) || player.hasPermission("optiSMP.protect.staff"))
+						{
+							waitingResponse.put(player.getName(), field);
+							player.sendMessage(ChatColor.RED + "WARNING: You are about to delete the pfield " + field.getName() + ". Type '/pfield yes' to confirm or '/pfield no' to cancel");
+							return true;
+						}
+						else
+						{
+							player.sendMessage(ChatColor.RED + "You are not the owner of this field!");
+							return false;
+						}
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + "You are not the owner of this field!");
-						return false;
-					}
-				}
-				else
-				{
-					player.sendMessage(ChatColor.RED + "You must be standing in the field to remove it!");
-					return false;
-				}				
-			}
+						if(args.length == 1)
+						{
+							player.sendMessage(ChatColor.RED + "You are not standing in a field!");							
+							return false;
+						}
+						if(args.length == 2) 
+						{
+							player.sendMessage(ChatColor.RED + "You do not have a field by that name!");
+							return false;
+						}
+					}				
+
+			}			
 			if(args[0].equalsIgnoreCase("yes"))
 			{
 				if(waitingResponse.get(player.getName()) != null)
@@ -344,6 +360,21 @@ public class PField implements CommandExecutor
 		if(args[0].equalsIgnoreCase("flag"))
 		{
 			
+		}
+		if(args[0].equalsIgnoreCase("togglemessages"))
+		{
+			if(args.length == 1)
+			{
+				SMPplayer smpPlayer = util.getSMPPlayer(player);
+				smpPlayer.toggleRegionMessages();
+				player.sendMessage("Field messages are now " + smpPlayer.getRegionMessages());
+				return true;
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + "Incorrect usage /pfield togglemessages");
+				return false;
+			}
 		}
 		
 		return false;

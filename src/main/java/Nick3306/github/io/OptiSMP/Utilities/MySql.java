@@ -36,17 +36,12 @@ public class MySql
 		this.util = this.plugin.protectUtil;
 				
 		
-		//loads the jdbc driver
-	/*
-		dataSource.setJdbcUrl("jdbc:mysql://144.217.68.13:3306/mc30875?autoReconnect=true&useSSL=false");
-		dataSource.setUsername("mc30875");
-		dataSource.setPassword("cad6a753e0");	
-		dataSource.setMaximumPoolSize(5);
-		dataSource.setIdleTimeout(0);
-	*/
-		
 		dataSource.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-		//
+		dataSource.addDataSourceProperty("serverName", plugin.getConfig().getString("mysql.host"));
+        dataSource.addDataSourceProperty("port", plugin.getConfig().getString("mysql.port"));
+        dataSource.addDataSourceProperty("databaseName", plugin.getConfig().getString("mysql.database"));
+        dataSource.addDataSourceProperty("user", plugin.getConfig().getString("mysql.user"));
+        dataSource.addDataSourceProperty("password", plugin.getConfig().getString("mysql.password"));
         dataSource.setMaximumPoolSize(15);
 	   // dataSource.setIdleTimeout(0);
 	}

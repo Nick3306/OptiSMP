@@ -45,16 +45,17 @@ public class PlayerMovement implements Listener
 		    	{
 		    		if(!currentField.getName().equalsIgnoreCase(lastField))
 			    	{
-			    		Bukkit.getLogger().info("Player entered a new field");
-			    		player.sendMessage(ChatColor.GREEN + "You have entered the field " + currentField.getName() + " owned by player " + plugin.getServer().getOfflinePlayer(currentField.getOwner()).getName());
-		    			smpPlayer.setLastField(currentField.getName());	 
+		    			if(smpPlayer.getRegionMessages() == true)
+		    			{
+		    				player.sendMessage(ChatColor.GREEN + "You have entered the field " + currentField.getName() + " owned by player " + plugin.getServer().getOfflinePlayer(currentField.getOwner()).getName());
+		    				smpPlayer.setLastField(currentField.getName());	 
+		    			}
 		    			
 		    			/*
 			    		if(!currentField.getGreeting().equalsIgnoreCase("default"))
 			    		{			    			
 			    			player.sendMessage(ChatColor.GREEN + currentField.getGreeting());
 			    			smpPlayer.setLastField(currentField.getName());	    		
-			    		}
 			    		else
 			    		{
 			    			player.sendMessage(ChatColor.GREEN + "You have entered the field " + currentField.getName() + " owned by player " + plugin.getServer().getOfflinePlayer(currentField.getOwner()).getName());
@@ -68,7 +69,6 @@ public class PlayerMovement implements Listener
 		    	{
 		    		if(!lastField.equalsIgnoreCase("none"))
 		    		{
-		    			Bukkit.getLogger().info("Player left a field");
 		    			smpPlayer.setLastField("none");	
 		    		}
 		    	}

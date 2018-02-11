@@ -7,6 +7,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -35,14 +36,13 @@ public class EntityDamageListener implements Listener
 	{
 		Entity entity = event.getEntity();
 		Location loc = entity.getLocation();
-		if(entity instanceof Animals || entity instanceof ItemFrame)
+		if(entity instanceof Animals || entity instanceof ItemFrame || entity instanceof Villager)
 		{	
 			if(proUtil.inField(loc))
 			{						
-				EntityDamageByEntityEvent nEvent = (EntityDamageByEntityEvent) entity.getLastDamageCause();
-				if(nEvent.getDamager() instanceof Player)
-				{
-					Player player = (Player) nEvent.getDamager();
+				if(event.getDamager() instanceof Player)
+				{					
+					Player player = (Player) event.getDamager();
 					ProtectionField pfield = proUtil.getPField(loc);
 					
 					if(pfield.members.contains(player.getUniqueId()) || pfield.getOwner().equals(player.getUniqueId()))

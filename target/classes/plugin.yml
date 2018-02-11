@@ -1,6 +1,6 @@
 name: OptiSMP
 main: Nick3306.github.io.OptiSMP.Main
-version: 1.0
+version: 1.2.1
 commands:
    pfield:
       description: OptiSMP

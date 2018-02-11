@@ -12,6 +12,7 @@ C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listene
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\EntityDamageListener.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\BlockEditListeners.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\PlayerDeathListener.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\PVP\WorldController.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\BlockBreakListener.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Utilities\SMPplayer.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Commands\PField.java
@@ -19,8 +20,10 @@ C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Command
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\PlayerLeaveListener.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\EntityDeathListener.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\OptiProtect\ProtectUtilities.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\PVP\WorldUtil.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\BucketEmptyListener.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\ChatListener.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Main.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\HangingBreakEvent.java
 C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\InteractEntityListener.java
+C:\Users\Nick\workspace\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\PVP\Party.java

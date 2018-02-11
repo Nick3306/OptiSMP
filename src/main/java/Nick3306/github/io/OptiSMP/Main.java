@@ -52,7 +52,7 @@ public class Main extends JavaPlugin
 	public TradeUtilities tradeUtil;
 	public MySql sql;
 	public void onEnable()
-	{
+	{	
 		PluginManager pm = getServer().getPluginManager();
 		this.getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
