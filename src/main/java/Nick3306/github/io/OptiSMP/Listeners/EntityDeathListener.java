@@ -11,20 +11,19 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import Nick3306.github.io.OptiSMP.Main;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
 
 public class EntityDeathListener implements Listener
 {
 	private Main plugin;
-	private ProtectUtilities proUtil;
+	//private ProtectUtilities proUtil;
 	private GeneralUtilities util;
 	public EntityDeathListener(Main plugin)
 	{
 	   this.plugin = plugin;
 	   this.util = this.plugin.util; 
-	   this.proUtil = this.plugin.protectUtil;
+	   //this.proUtil = this.plugin.protectUtil;
 	}
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)

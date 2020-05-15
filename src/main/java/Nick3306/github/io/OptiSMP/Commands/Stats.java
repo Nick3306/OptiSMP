@@ -1,7 +1,5 @@
 package Nick3306.github.io.OptiSMP.Commands;
 
-import java.util.HashMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -24,6 +22,7 @@ public class Stats implements CommandExecutor
 	   this.plugin = plugin;
 	   this.util =  this.plugin.util;		   
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2lable, String[] args)
 	{

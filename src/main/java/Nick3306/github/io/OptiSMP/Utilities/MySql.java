@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,19 +16,18 @@ import com.zaxxer.hikari.*;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 
 // Uses Hikari to implement connection pooling so a new connection doesnt have to be opened every time I need it
 public class MySql 
 {
 	private Main plugin;
-	private ProtectUtilities util;
+	//private ProtectUtilities util;
 	HikariDataSource dataSource;
 	public MySql(Main plugin)
 	{
 		dataSource = new HikariDataSource();
 		this.plugin = plugin;
-		this.util = this.plugin.protectUtil;
+		//this.util = this.plugin.protectUtil;
 				
 		
 		dataSource.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
@@ -54,7 +51,7 @@ public void getFields()
 			String block1String, block2String;
 			Location block1, block2;
 			World world;
-			String greeting;
+			//String greeting;
 			
 			try 
 			{	
@@ -421,19 +418,19 @@ public void getFields()
 						String last_online = playerResult.getString("last_online");
 						int total_logins = playerResult.getInt("total_logins");
 						long time_online = playerResult.getLong("time_online");
-						int total_votes = playerResult.getInt("total_votes");
+						//int total_votes = playerResult.getInt("total_votes");
 						int blocks_placed = playerResult.getInt("blocks_placed");
 						int blocks_broken = playerResult.getInt("blocks_broken");
 						int lines_spoken = playerResult.getInt("lines_spoken");
-						int damage_dealt = playerResult.getInt("damage_dealt");
-						int damage_received = playerResult.getInt("damage_received");
+						//int damage_dealt = playerResult.getInt("damage_dealt");
+						//int damage_received = playerResult.getInt("damage_received");
 						int players_killed = playerResult.getInt("players_killed");
 						int monsters_killed = playerResult.getInt("monsters_killed");
 						int animals_killed = playerResult.getInt("animals_killed");
 						int total_deaths = playerResult.getInt("total_deaths");
-						int fish_caught = playerResult.getInt("fish_caught");
-						int items_enchanted = playerResult.getInt("items_enchanted");
-						int animals_bred = playerResult.getInt("animals_bred");
+						//int fish_caught = playerResult.getInt("fish_caught");
+						//int items_enchanted = playerResult.getInt("items_enchanted");
+						//int animals_bred = playerResult.getInt("animals_bred");
 					
 					
 						player.sendMessage(ChatColor.GREEN + "Stats for player " + current_name);

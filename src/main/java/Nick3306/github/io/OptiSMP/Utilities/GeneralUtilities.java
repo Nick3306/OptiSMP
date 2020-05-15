@@ -75,6 +75,17 @@ public class GeneralUtilities
 			}
 			
 		}
+		else if(groups.get(0).equalsIgnoreCase("Veteran"))
+		{
+			//Check if they should be promoted to Champion
+			if((smpPlayer.getTime_online() >= 1368000000) && ((smpPlayer.getBlocks_broken() + smpPlayer.getBlocks_placed()) >= 500000) && (smpPlayer.getMonsters_killed() >= 4480))
+			{
+				user.addGroup("Champion");
+				smpPlayer.setProtectionBlocksLeft(smpPlayer.getProtectionBlocksLeft() + 17577);
+				smpPlayer.setProtectionBlocksMax(smpPlayer.getProtectionBlocksMax() + 17577);
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
+			}
+		}
 	}
 	/*
 	public void updateLastField(SMPplayer player)

@@ -1,6 +1,5 @@
 package Nick3306.github.io.OptiSMP.Listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,7 +31,8 @@ public class PlayerMovement implements Listener
 	  {
 		 	org.bukkit.Location from = event.getFrom();
 		    org.bukkit.Location to = event.getTo();
-		    int x2;
+		    @SuppressWarnings("unused")
+			int x2;
 		    if(Math.round(from.getX()) != (x2 = (int) Math.round(to.getX())))
 		    {		    	
 		    	Player player = event.getPlayer();

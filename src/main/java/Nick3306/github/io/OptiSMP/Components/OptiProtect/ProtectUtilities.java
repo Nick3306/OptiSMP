@@ -5,21 +5,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import Nick3306.github.io.OptiSMP.Main;
 //import net.minecraft.server.v1_13_R2.Particle;
-import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
-
-
 
 //Class contains functions that will have to be used over and over again on a general basis.
 public class ProtectUtilities 
@@ -169,8 +163,8 @@ public class ProtectUtilities
 			lowBlock =  field.getBlock2().clone();
 			highBlock = field.getBlock1().clone();
 		}
-		Location low = lowBlock;
-		Location high = highBlock;
+		//Location low = lowBlock;
+		//Location high = highBlock;
 		ArrayList<Location> toReturn = new ArrayList<Location>();
 		//These variables are the components of the displacement between the two corners
 		//The difference in x, y, and z
@@ -221,7 +215,7 @@ public class ProtectUtilities
 			Location temp1 = highBlock.clone();
 			Location temp2 = lowBlock.clone();	
 			
-			Location lowBlockUp = new Location(null, lowBlock.getX(), highBlock.getY(), highBlock.getZ());
+			//Location lowBlockUp = new Location(null, lowBlock.getX(), highBlock.getY(), highBlock.getZ());
 			
 			if(highBlock.getY() >= lowBlock.getY())
 			{

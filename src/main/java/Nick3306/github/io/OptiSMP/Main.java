@@ -1,11 +1,8 @@
 package Nick3306.github.io.OptiSMP;
 
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
-
-import javax.naming.NamingException;
 
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,8 +31,6 @@ import Nick3306.github.io.OptiSMP.Listeners.PlayerFishListener;
 import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.MySql;
 import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
-
-
 
 public class Main extends JavaPlugin
 {

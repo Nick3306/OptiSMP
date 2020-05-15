@@ -1,7 +1,6 @@
 package Nick3306.github.io.OptiSMP.Commands;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -9,7 +8,6 @@ import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -18,15 +16,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
 import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
-import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
-
 
 public class PField implements CommandExecutor
 {
@@ -40,6 +34,7 @@ public class PField implements CommandExecutor
 	   this.util =  this.plugin.util;		   
 	   this.proUtil = this.plugin.protectUtil;
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2lable, String[] args) 
 	{
@@ -357,8 +352,8 @@ public class PField implements CommandExecutor
 			if(args[0].equalsIgnoreCase("list"))
 			{	
 				player.sendMessage(ChatColor.GREEN + "Fields:");
-				SMPplayer smpPlayer = util.getSMPPlayer(player);
-				ArrayList<ProtectionField> playerFields = smpPlayer.getPFields();
+				//SMPplayer smpPlayer = util.getSMPPlayer(player);
+				//ArrayList<ProtectionField> playerFields = smpPlayer.getPFields();
 				int count = 1;
 				for(ProtectionField field : plugin.fields)
 				{

@@ -6,19 +6,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import Nick3306.github.io.OptiSMP.Main;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
 
 public class PlayerLeaveListener implements Listener
 {
 	private Main plugin;
-	private ProtectUtilities proUtil;
+	//private ProtectUtilities proUtil;
 	private GeneralUtilities util;
 	public PlayerLeaveListener(Main plugin)
 	{
 	   this.plugin = plugin;
-	   this.proUtil = this.plugin.protectUtil;
+	   //this.proUtil = this.plugin.protectUtil;
 	   this.util = plugin.util;
 	   
 	}

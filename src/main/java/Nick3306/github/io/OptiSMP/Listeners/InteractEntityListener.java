@@ -12,17 +12,16 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
 
 public class InteractEntityListener implements Listener
 {
 	private Main plugin;
 	private ProtectUtilities proUtil;
-	private GeneralUtilities util;
+	//private GeneralUtilities util;
 	public InteractEntityListener(Main plugin)
 	{
 	   this.plugin = plugin;
-	   this.util = this.plugin.util;
+	   //this.util = this.plugin.util;
 	   this.proUtil = this.plugin.protectUtil;
 	}
 	@EventHandler
