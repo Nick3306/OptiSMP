@@ -1,6 +1,5 @@
 package Nick3306.github.io.OptiSMP.Utilities;
 
-import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,8 +18,6 @@ import com.zaxxer.hikari.*;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 
 // Uses Hikari to implement connection pooling so a new connection doesnt have to be opened every time I need it
@@ -78,7 +75,7 @@ public void getFields()
 					String[] block2Coords = block2String.split(",");
 					block2 = new Location(world, Double.parseDouble(block2Coords[0]),Double.parseDouble(block2Coords[1]),Double.parseDouble(block2Coords[2]));
 					
-					ProtectionField fieldToAdd = new ProtectionField(world, block1, block2, owner, name);
+					ProtectionField fieldToAdd = new ProtectionField(world, block1, block2, owner, name, "cuboid");
 					
 					
 					//Grab field members for current field					
@@ -111,7 +108,7 @@ public void getFields()
 	public void addField(final ProtectionField field)
 	{
 		
-		Bukkit.getLogger().info("Adding field to database");
+		Bukkit.getLogger().info("[OptiSMP] Adding field to database");
 		Bukkit.getScheduler().runTaskAsynchronously(this.plugin, new Runnable()
 		{
 			public void run() 
@@ -133,13 +130,13 @@ public void getFields()
 					myStatement.setString(5, field.getWorld().getName());			
 					myStatement.execute();
 					myConn.close();
-					Bukkit.getLogger().info("Field added to database successfully");
+					Bukkit.getLogger().info("[OptiSMP] Field added to database successfully");
 					
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					Bukkit.getLogger().info("FAILED to insert into DB");
+					Bukkit.getLogger().info("[OptiSMP] FAILED to insert into DB");
 					
 				}
 				
@@ -167,7 +164,7 @@ public void getFields()
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					Bukkit.getLogger().info("FAILED to add to DB");
+					Bukkit.getLogger().info("[OptiSMP] FAILED to add to DB");
 				}
 			}
 		});
@@ -194,7 +191,7 @@ public void getFields()
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					Bukkit.getLogger().info("FAILED to remove from DB");
+					Bukkit.getLogger().info("[OptiSMP] FAILED to remove from DB");
 				}
 			}
 		});
@@ -207,7 +204,7 @@ public void getFields()
 			{
 				try
 				{
-					Bukkit.getLogger().info("Removing field from the DB");
+					Bukkit.getLogger().info("[OptiSMP] Removing field from the DB");
 					//Remove field from ProtectionField table
 					Connection myConn = dataSource.getConnection();
 					PreparedStatement myStatement = myConn.prepareStatement("DELETE FROM ProtectionFields WHERE field_name =? AND owner =?;");
@@ -223,12 +220,12 @@ public void getFields()
 					myStatement.execute();	
 					
 					myConn.close();
-					Bukkit.getLogger().info("Successfully Removed field from the DB");
+					Bukkit.getLogger().info("[OptiSMP] Successfully Removed field from the DB");
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					Bukkit.getLogger().info("FAILED to remove field from DB");					
+					Bukkit.getLogger().info("[OptiSMP] FAILED to remove field from DB");					
 				}
 			}
 		});
@@ -248,7 +245,7 @@ public void getFields()
 					ResultSet playerResult = myStatement.executeQuery();
 					if(playerResult.next() == false)
 					{
-						Bukkit.getLogger().info("player doesnt exist in DB, creating entry");
+						Bukkit.getLogger().info("[OptiSMP] player doesnt exist in DB, creating entry");
 						//player doesnt exist, create them
 						myStatement = myConn.prepareStatement("INSERT INTO player_data " + "VALUES (?,?,?,?,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15625,15625)");
 						myStatement.setString(1, player.getUniqueId().toString());
@@ -257,7 +254,7 @@ public void getFields()
 						myStatement.setString(4, LocalDateTime.now().toString());
 						
 						
-						Bukkit.getLogger().info("Creating new player object from data");
+						Bukkit.getLogger().info("[OptiSMP] Creating new player object from data");
 						//create smp player object
 						SMPplayer toAdd = new SMPplayer(player, player.getUniqueId(), player.getName(), LocalDateTime.now().toString(), LocalDateTime.now().toString(), 1, 0, 0, 0, 0,0 , 0,
 								0, 0, 0, 0, 0, 0, 0, 0, 15625, 15625);
@@ -271,14 +268,14 @@ public void getFields()
 					}
 					else
 					{	
-						Bukkit.getLogger().info("player exists in DB, grabbing data");
+						Bukkit.getLogger().info("[OptiSMP] player exists in DB, grabbing data");
 						//player exists, create their SMPplayer class			
 						String uuid = playerResult.getString("uuid");
 						String name = playerResult.getString("current_name");
 						String join_date = playerResult.getString("join_date");
 						String last_online = playerResult.getString("last_online");
 						int total_logins = playerResult.getInt("total_logins");
-						int time_online = playerResult.getInt("time_online");
+						long time_online = playerResult.getLong("time_online");
 						int total_votes = playerResult.getInt("total_votes");
 						int blocks_placed = playerResult.getInt("blocks_placed");
 						int blocks_broken = playerResult.getInt("blocks_broken");
@@ -296,7 +293,7 @@ public void getFields()
 						int protection_blocks_max = playerResult.getInt("protection_blocks_max");
 						
 
-						Bukkit.getLogger().info("Creating new player object from data");
+						Bukkit.getLogger().info("[OptiSMP] Creating new player object from data");
 						//create smp player object
 						SMPplayer toAdd = new SMPplayer(player, UUID.fromString(uuid), name, join_date, last_online, total_logins, time_online, total_votes, blocks_placed, blocks_broken, lines_spoken, damage_dealt,
 								damage_received, players_killed, monsters_killed, animals_killed, total_deaths, fish_caught, items_enchanted, animals_bred, protection_blocks_left, protection_blocks_max);
@@ -305,66 +302,10 @@ public void getFields()
 						toAdd.setLast_online(LocalDateTime.now().toString());
 						//Put smp player into the hashmap
 						plugin.players.put(player.getUniqueId(), toAdd);		
-						Bukkit.getLogger().info("player retrieved from the DB");
+						Bukkit.getLogger().info("[OptiSMP] player retrieved from the DB");
 						myConn.close();
+										
 						
-						PermissionUser user = PermissionsEx.getUser(player);
-						Bukkit.getLogger().info("Prefix is: " + user.getPrefix());
-						List<String> groups = user.getParentIdentifiers();
-						Bukkit.getLogger().info("Rank is is: " + groups.get(0));
-						
-						// Check joining players stats to see if they should be promoted
-						if(groups.get(0).equalsIgnoreCase("Guest"))
-						{
-							Bukkit.getLogger().info("player is a guest");
-							//Check if they should be promoted to Member
-							if((toAdd.getTime_online() >= 7200000))
-							{
-								user.addGroup("Member");
-								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
-							}
-							
-						}
-						else if(groups.get(0).equalsIgnoreCase("Member"))
-						{
-							Bukkit.getLogger().info("player is a member");
-							//Check if they should be promoted to Resident
-							if((toAdd.getTime_online() >= 28800000) && ((toAdd.getBlocks_broken() + toAdd.getBlocks_placed()) >= 10000) && (toAdd.getMonsters_killed() >= 90))
-							{
-								user.addGroup("Resident");
-								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 7812);
-								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 7812);
-								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
-							}
-							
-							
-						}
-						else if(groups.get(0).equalsIgnoreCase("Resident"))
-						{
-							Bukkit.getLogger().info("player is a resident");
-							//Check if they should be promoted to Citizen
-							if((toAdd.getTime_online() >= 86400000) && ((toAdd.getBlocks_broken() + toAdd.getBlocks_placed()) >= 30000) && (toAdd.getMonsters_killed() >= 275))
-							{
-								user.addGroup("Citizen");
-								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 11718);
-								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 11718);
-								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
-							}
-							
-						}
-						else if(groups.get(0).equalsIgnoreCase("Citizen"))
-						{
-							Bukkit.getLogger().info("player is a citizen");
-							//Check if they should be promoted to Veteran
-							if((toAdd.getTime_online() >= 360000000) && ((toAdd.getBlocks_broken() + toAdd.getBlocks_placed()) >= 125000) && (toAdd.getMonsters_killed() >= 1120))
-							{
-								user.addGroup("Veteran");
-								toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + 17577);
-								toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + 17577);
-								Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "givehome " + player.getName() + " 1");
-							}
-							
-						}
 						
 					}
 					
@@ -372,7 +313,7 @@ public void getFields()
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					Bukkit.getLogger().info("FAILED to retrieve player");
+					Bukkit.getLogger().info("[OptiSMP] FAILED to retrieve player");
 				}
 			}
 		});
@@ -385,15 +326,13 @@ public void getFields()
 			{
 				try
 				{
-					Bukkit.getLogger().info("Attempting to save player to the DB");
+					Bukkit.getLogger().info("[OptiSMP] Attempting to save player to the DB");
 					Connection myConn = dataSource.getConnection();
-					Bukkit.getLogger().info("After connection grabbed");
 					PreparedStatement myStatement = myConn.prepareStatement("UPDATE player_data SET current_name=?, last_online=?, total_logins=?,time_online=?,total_votes=?, blocks_placed=?, blocks_broken=?, lines_spoken=?, damage_dealt=?, damage_received=?, players_killed=?, monsters_killed=?, animals_killed=?, total_deaths=?, fish_caught=?, items_enchanted=?, animals_bred=?, protection_blocks_left=?, protection_blocks_max=? WHERE uuid = ?;");
-					Bukkit.getLogger().info("After prepared statement");
-					myStatement.setString(1,player.getName());
+					myStatement.setString(1,player.player.getName());
 					myStatement.setString(2,player.getLast_online());
 					myStatement.setInt(3,player.getTotal_logins());
-					myStatement.setInt(4,player.getTime_online());
+					myStatement.setLong(4,player.getTime_online());
 					myStatement.setInt(5,player.getTotal_votes());
 					myStatement.setInt(6,player.getBlocks_placed());
 					myStatement.setInt(7,player.getBlocks_broken());
@@ -410,33 +349,29 @@ public void getFields()
 					myStatement.setInt(18, player.getProtectionBlocksLeft());
 					myStatement.setInt(19, player.getProtectionBlocksMax());
 					myStatement.setString(20, player.getUuid().toString());
-					Bukkit.getLogger().info("Before execute query");
 					myStatement.executeUpdate();	
-					Bukkit.getLogger().info("player updated in the DB");
+					Bukkit.getLogger().info("[OptiSMP] player updated in the DB");
 					myConn.close();
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					Bukkit.getLogger().info("FAILED to update player");
+					Bukkit.getLogger().info("[OptiSMP] FAILED to update player");
 				}
 			}
 		});
 	}
 	public void savePlayerShutdown(SMPplayer player)
-	{
-		Bukkit.getLogger().info("Attempting to save player to the DB after unexpected shutdown");
+	{		
 		try 
 		{
-			Bukkit.getLogger().info("Attempting to save player to the DB");
+			Bukkit.getLogger().info("[OptiSMP] Attempting to save player to the DB");
 			Connection myConn = dataSource.getConnection();
-			Bukkit.getLogger().info("After connection grabbed");
-			PreparedStatement myStatement = myConn.prepareStatement("UPDATE player_data SET current_name=?, last_online=?, total_logins=?,time_online=?,total_votes=?, blocks_placed=?, blocks_broken=?, lines_spoken=?, damage_dealt=?, damage_received=?, players_killed=?, monsters_killed=?, animals_killed=?, total_deaths=?, fish_caught=?, items_enchanted=?, animals_bred=?, protection_blocks_left=?, protection_blocks_max=? WHERE uuid = ?;");
-			Bukkit.getLogger().info("After prepared statement");
+			PreparedStatement myStatement = myConn.prepareStatement("UPDATE player_data SET current_name=?, last_online=?, total_logins=?,time_online=?,total_votes=?, blocks_placed=?, blocks_broken=?, lines_spoken=?, damage_dealt=?, damage_received=?, players_killed=?, monsters_killed=?, animals_killed=?, total_deaths=?, fish_caught=?, items_enchanted=?, animals_bred=?, protection_blocks_left=?, protection_blocks_max=? WHERE uuid = ?;");			
 			myStatement.setString(1,player.getName());
 			myStatement.setString(2,player.getLast_online());
 			myStatement.setInt(3,player.getTotal_logins());
-			myStatement.setInt(4,player.getTime_online());
+			myStatement.setLong(4,player.getTime_online());
 			myStatement.setInt(5,player.getTotal_votes());
 			myStatement.setInt(6,player.getBlocks_placed());
 			myStatement.setInt(7,player.getBlocks_broken());
@@ -461,7 +396,7 @@ public void getFields()
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			Bukkit.getLogger().info("FAILED to save player");
+			Bukkit.getLogger().info("[OptiSMP] FAILED to save player");
 		}
 	}
 	
@@ -474,9 +409,8 @@ public void getFields()
 			{
 				try
 				{
-					Bukkit.getLogger().info("Attempting to get player from the DB by UUID");
+					Bukkit.getLogger().info("[OptiSMP] Attempting to get player from the DB by UUID");
 					Connection myConn = dataSource.getConnection();
-					Bukkit.getLogger().info("After connection grabbed");
 					PreparedStatement myStatement = myConn.prepareStatement("SELECT * FROM player_data WHERE uuid = ?;");
 					myStatement.setString(1, uuid.toString());
 					ResultSet playerResult = myStatement.executeQuery();
@@ -486,7 +420,7 @@ public void getFields()
 						String join_date = playerResult.getString("join_date");
 						String last_online = playerResult.getString("last_online");
 						int total_logins = playerResult.getInt("total_logins");
-						int time_online = playerResult.getInt("time_online");
+						long time_online = playerResult.getLong("time_online");
 						int total_votes = playerResult.getInt("total_votes");
 						int blocks_placed = playerResult.getInt("blocks_placed");
 						int blocks_broken = playerResult.getInt("blocks_broken");
@@ -519,17 +453,90 @@ public void getFields()
 						player.sendMessage(ChatColor.YELLOW + "Animals Killed: " + animals_killed);
 						player.sendMessage(ChatColor.YELLOW + "Total Deaths: " + total_deaths);
 					}
-					Bukkit.getLogger().info("player grabbed from the DB");
+					else
+					{
+						player.sendMessage("Player does not exist");
+					}
+					Bukkit.getLogger().info("[OptiSMP] player grabbed from the DB");
 					myConn.close();
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					Bukkit.getLogger().info("FAILED toget player stats from DB");
+					Bukkit.getLogger().info("[OptiSMP] FAILED toget player stats from DB");
 				}
 			}
 		});		
 	}
+	
+	public void addPFieldBlocks(final Player player, final int blocks)
+	{
+		Bukkit.getScheduler().runTaskAsynchronously(this.plugin, new Runnable()
+		{
+			public void run() 
+			{
+				try
+				{
+					Connection myConn = dataSource.getConnection();
+					PreparedStatement myStatement = myConn.prepareStatement("SELECT * FROM player_data WHERE uuid = ?;");
+					myStatement.setString(1, player.getUniqueId().toString());
+					ResultSet playerResult = myStatement.executeQuery();
+					if(playerResult.next() != false)
+					{
+						//player exists, create their SMPplayer class			
+						String uuid = playerResult.getString("uuid");
+						String name = playerResult.getString("current_name");
+						String join_date = playerResult.getString("join_date");
+						String last_online = playerResult.getString("last_online");
+						int total_logins = playerResult.getInt("total_logins");
+						long time_online = playerResult.getLong("time_online");
+						int total_votes = playerResult.getInt("total_votes");
+						int blocks_placed = playerResult.getInt("blocks_placed");
+						int blocks_broken = playerResult.getInt("blocks_broken");
+						int lines_spoken = playerResult.getInt("lines_spoken");
+						int damage_dealt = playerResult.getInt("damage_dealt");
+						int damage_received = playerResult.getInt("damage_received");
+						int players_killed = playerResult.getInt("players_killed");
+						int monsters_killed = playerResult.getInt("monsters_killed");
+						int animals_killed = playerResult.getInt("animals_killed");
+						int total_deaths = playerResult.getInt("total_deaths");
+						int fish_caught = playerResult.getInt("fish_caught");
+						int items_enchanted = playerResult.getInt("items_enchanted");
+						int animals_bred = playerResult.getInt("animals_bred");
+						int protection_blocks_left = playerResult.getInt("protection_blocks_left");
+						int protection_blocks_max = playerResult.getInt("protection_blocks_max");
+					
+
+						Bukkit.getLogger().info("[OptiSMP] Creating new player object from data");
+						//create smp player object
+						SMPplayer toAdd = new SMPplayer(player, UUID.fromString(uuid), name, join_date, last_online, total_logins, time_online, total_votes, blocks_placed, blocks_broken, lines_spoken, damage_dealt,
+								damage_received, players_killed, monsters_killed, animals_killed, total_deaths, fish_caught, items_enchanted, animals_bred, protection_blocks_left, protection_blocks_max);
+					
+						toAdd.setProtectionBlocksMax(toAdd.getProtectionBlocksMax() + blocks);
+						toAdd.setProtectionBlocksLeft(toAdd.getProtectionBlocksLeft() + blocks);
+					
+						savePlayer(toAdd);
+					}
+					else
+					{
+						Bukkit.getLogger().info("[OptiSMP] player doesnt exist");
+					}
+		
+					Bukkit.getLogger().info("[OptiSMP] player retrieved from the DB");
+					myConn.close();
+					
+					
+					
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					Bukkit.getLogger().info("[OptiSMP] FAILED toget player stats from DB");
+				}
+			}
+		});		
+	}
+	
 	public void closeConnections()
 	{
 		dataSource.close();

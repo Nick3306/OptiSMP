@@ -25,7 +25,7 @@ public class SMPplayer
 	private String join_date;
 	private String last_online;
 	private int total_logins;
-	private int time_online;
+	private long time_online;
 	private int total_votes;
 	private int blocks_placed;
 	private int blocks_broken;
@@ -45,7 +45,7 @@ public class SMPplayer
 	String lastField = "none";
 	private boolean regionMessages = true;
 		
-	public SMPplayer(Player player, UUID uuid, String name, String join_date, String last_online, int total_logins, int time_online,
+	public SMPplayer(Player player, UUID uuid, String name, String join_date, String last_online, int total_logins, long time_online,
 			int total_votes, int blocks_placed, int blocks_broken, int lines_spoken, int damage_dealt,
 			int damage_received, int players_killed, int monsters_killed, int animlas_killed, int total_deaths,
 			int fish_caught, int items_enchanted, int animals_bred, int protection_blocks_left, int protection_blocks_max)
@@ -113,13 +113,13 @@ public class SMPplayer
 	}
 
 
-	public int getTime_online()
+	public long getTime_online()
 	{
 		return time_online;
 	}
 
 
-	public void setTime_online(int time_online)
+	public void setTime_online(long time_online)
 	{
 		this.time_online = time_online;
 	}

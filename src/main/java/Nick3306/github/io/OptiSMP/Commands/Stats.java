@@ -37,8 +37,8 @@ public class Stats implements CommandExecutor
 				int currentTime = (int) (System.currentTimeMillis());
 				//get players login time and subtract it from their logout time to get time played
 				int sessionTime = currentTime - smpPlayer.loginTime;
-				int currentOnlineTime = smpPlayer.getTime_online();
-				int timeOnline = currentOnlineTime + sessionTime;
+				long currentOnlineTime = smpPlayer.getTime_online();
+				long timeOnline = currentOnlineTime + sessionTime;
 				
 				//calculate time online
 				long second = (timeOnline / 1000) % 60;

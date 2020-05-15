@@ -63,6 +63,7 @@ public class Main extends JavaPlugin
 		
 		sql = new MySql(this);		 
 		sql.getFields();
+			
 		
 		// Register listeners
 		pm.registerEvents(new BlockEditListeners(this), this);

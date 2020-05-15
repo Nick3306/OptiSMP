@@ -41,6 +41,7 @@ public class EntityDeathListener implements Listener
 				{		
 					// player killed a monster increment monsters killed
 					smpPlayer.setMonsters_killed(smpPlayer.getMonsters_killed() + 1);
+					util.checkRankUp(smpPlayer);
 				}
 				if(e instanceof Animals)
 				{
@@ -60,6 +61,7 @@ public class EntityDeathListener implements Listener
 			        {		
 			        	// player killed a monster increment monsters killed
 			        	smpPlayer.setMonsters_killed(smpPlayer.getMonsters_killed() + 1);
+			        	util.checkRankUp(smpPlayer);
 			        }
 			        if(e instanceof Animals)
 			        {

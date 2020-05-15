@@ -97,11 +97,18 @@ public class WorldController
 	    }
 	}
 	
-	public void createWorld(String name)
+	public void createWorld(String name, String templateName)
 	{
 		WorldCreator creator = new WorldCreator(name);
 		World world = creator.createWorld();
 		this.worlds.add(world);
+		
+		//get file paths for both new world and template world to copy files
+		File newWorld = world.getWorldFolder();
+		File template = Bukkit.getServer().getWorld(templateName).getWorldFolder();
+		//Copy files from template to new world
+		copyWorldFiles(template, newWorld);
+		
 	}
 	
 	

@@ -21,7 +21,7 @@ public class BlockBreakListener implements Listener
 	public BlockBreakListener(Main plugin)
 	{
 		this.plugin = plugin;
-		this. util = this.plugin.util;
+		this.util = this.plugin.util;
 		this.proUtil = this.plugin.protectUtil;
 	}
 	@EventHandler
@@ -38,6 +38,7 @@ public class BlockBreakListener implements Listener
 				// Player is not allowed to build in field		
 				player.sendMessage("You are not allowed to build here!");
 				event.setCancelled(true);
+				return;
 			}
 			else
 			{
@@ -48,5 +49,6 @@ public class BlockBreakListener implements Listener
 		//Decrement the blocks_broken stat
 		SMPplayer smpPlayer = util.getSMPPlayer(player);
 		smpPlayer.setBlocks_broken(smpPlayer.getBlocks_broken() + 1);
+		util.checkRankUp(smpPlayer);
 	}
 }

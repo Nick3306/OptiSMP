@@ -1,5 +1,8 @@
 package Nick3306.github.io.OptiSMP.Listeners;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -38,7 +41,7 @@ public class BlockPlaceListener implements Listener
 			
 			Location block = event.getBlockPlaced().getLocation();		
 			ProtectionField field = proUtil.getNewField(player);
-			if (field.getBlock1() == null)
+			if (field.getBlock1() == null && field.getDefineType().equalsIgnoreCase("cuboid"))
 			{
 				field.setBlock1(block);
 				event.setCancelled(true);
@@ -46,7 +49,19 @@ public class BlockPlaceListener implements Listener
 			}
 			else if (field.getBlock2() == null)
 			{
-				field.setBlock2(block);
+				if (field.getDefineType().equalsIgnoreCase("radius"))
+				{
+					// set block one and two on the field based on the radius.
+					int radius = field.getRadius();
+					Location block1 = new Location(block.getWorld(), block.getX() - radius, block.getY() - radius, block.getBlockZ() - radius);
+					field.setBlock1(block1);
+					Location block2 = new Location(block.getWorld(), block.getX() + radius, block.getY() + radius, block.getBlockZ() + radius);
+					field.setBlock2(block2);					
+				}
+				else
+				{
+					field.setBlock2(block);
+				}
 				for(ProtectionField otherField : plugin.fields)
 				{				
 					if(proUtil.fieldOverlap(field.getBlock1(), otherField.getBlock1(), field.getBlock2(), otherField.getBlock2()))
@@ -64,6 +79,9 @@ public class BlockPlaceListener implements Listener
 				{	
 					//Subtract the blocks from their remaining protection blocks
 					smpPlayer.setProtectionBlocksLeft(smpPlayer.getProtectionBlocksLeft() - field.getArea());
+					
+					//save player
+					plugin.sql.savePlayer(smpPlayer);
 					//Add field to the global pfield list
 					plugin.fields.add(field);
 					//Add field to the players own list of their fields
@@ -75,11 +93,15 @@ public class BlockPlaceListener implements Listener
 					//Add field to the database
 					this.plugin.sql.addField(field);
 					//Highlight field so player can see it
-					proUtil.highlightField(field, player);						
+					proUtil.highlightField(field, player);		
+					
+					//log created field
+					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+					proUtil.logFieldAction(date + ": Player " + player.getName() + " CREATED the field " + field.getName() + " using " + field.getArea() + " blocks. They have " + smpPlayer.getProtectionBlocksLeft() + " block left." );
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + "You do not have enough protection blocks left to make that field!");
+					player.sendMessage(ChatColor.RED + "You do not have enough protection blocks left to make a field of size " + field.getArea() +   ". You have " + smpPlayer.getProtectionBlocksLeft() + " blocks left.");
 					proUtil.removeNewField(field);
 					event.setCancelled(true);				
 				}											
@@ -106,5 +128,6 @@ public class BlockPlaceListener implements Listener
 		//Increment their blocks placed stat
 		SMPplayer smpPlayer = util.getSMPPlayer(player);
 		smpPlayer.setBlocks_placed(smpPlayer.getBlocks_placed() + 1);
+		util.checkRankUp(smpPlayer);
 	}
 }

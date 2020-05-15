@@ -17,20 +17,23 @@ public class ProtectionField
 	Location block2;
 	World world;
 	int area;
-	//String greeting = "default";
+	String defineType = null;
+	int radius;
+	//String greeting = "default" ;
 	
 	
 	//flags
 	Boolean pvp = false;
 	boolean chestFlag;
 
-	public ProtectionField(World world, Location block1, Location block2, UUID owner, String name)
+	public ProtectionField(World world, Location block1, Location block2, UUID owner, String name, String type)
 	{
 		this.world = world;
 		this.block1 = block1;
 		this.block2 = block2;
 		this.owner = owner;
 		this.name = name;
+		this.defineType = type;
 
 	}
 	public boolean getChestFlag()
@@ -94,10 +97,13 @@ public class ProtectionField
 	public boolean inPField(Location loc)
 	{
 		//Bukkit.getLogger().info("Player location is: " + loc);
+		if(this.world != null)
+		{
 		if(!loc.getWorld().getName().equalsIgnoreCase(this.world.getName()))
 		{
 			return false;
 		}
+		
 		int maxX = Math.max(block1.getBlockX(), block2.getBlockX());
 		int minX = Math.min(block1.getBlockX(), block2.getBlockX());
 		int maxY = Math.max(block1.getBlockY(), block2.getBlockY());
@@ -109,6 +115,7 @@ public class ProtectionField
 		{
 			//Bukkit.getLogger().info("inPField in the object returned true");
 			return true;
+		}
 		}
 		//Bukkit.getLogger().info("inPField in the object returned false");
 		return false;
@@ -123,4 +130,20 @@ public class ProtectionField
 		return this.greeting;
 	}
 	*/
+	public String getDefineType() 
+	{
+		return this.defineType;
+	}
+	public void setDefineType(String type) 
+	{
+		this.defineType = type;
+	}
+	public void setRadius(int radius)
+	{
+		this.radius = radius;
+	}
+	public int getRadius()
+	{
+		return this.radius;
+	}
 }

@@ -1,18 +1,24 @@
 package Nick3306.github.io.OptiSMP.Components.OptiProtect;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import Nick3306.github.io.OptiSMP.Main;
-import net.minecraft.server.v1_12_R1.EnumParticle;
-import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
+//import net.minecraft.server.v1_13_R2.Particle;
+import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
+
 
 
 //Class contains functions that will have to be used over and over again on a general basis.
@@ -290,8 +296,10 @@ public class ProtectUtilities
 	            {
 	            	for(Location loc : toIterate)
 					  {					 
-						  PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.FLAME, true, (float)loc.getX() + .5f, (float)loc.getY() +.5f, (float)loc.getZ() +.5f, 0, 0, 0, 0, 1);
-						  ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);				
+						  //PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(Particle.valueOf("flame"), true, (float)loc.getX() + .5f, (float)loc.getY() +.5f, (float)loc.getZ() +.5f, 0, 0, 0, 0, 1);
+						  //(CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);	
+	            		p.spawnParticle(Particle.FLAME, (float)loc.getX() + .5f, (float)loc.getY() +.5f, (float)loc.getZ() +.5f, 0, 0, 0, 0, 1);
+						  
 					  }
 	            }
 	            
@@ -343,6 +351,35 @@ public class ProtectUtilities
 		}
 		return toReturn;
 	}
+	
+	public void logFieldAction(String message)	 
+    { 
+        try
+        {
+            File saveTo = new File(plugin.getDataFolder(), "fieldLog.log");
+            if (!saveTo.exists())
+            {
+                saveTo.createNewFile();
+            }
+ 
+ 
+            FileWriter fw = new FileWriter(saveTo, true);
+ 
+            PrintWriter pw = new PrintWriter(fw);
+ 
+            pw.println(message);
+ 
+            pw.flush();
+ 
+            pw.close();
+ 
+        } 
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+ 
+    }
 			
 
 }

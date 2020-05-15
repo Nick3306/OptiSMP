@@ -28,11 +28,11 @@ public class PlayerLeaveListener implements Listener
 		Player player = event.getPlayer();
 		SMPplayer smpPlayer = util.getSMPPlayer(player);
 		//before saving the player to the databse, update the time online
-		int logoutTime = (int) (System.currentTimeMillis());
+		long logoutTime = (int) (System.currentTimeMillis());
 		//get players login time and subtract it from their logout time to get time played
-		int sessionTime = logoutTime - smpPlayer.loginTime;
-		int currentOnlineTime = smpPlayer.getTime_online();
-		int timeOnline = currentOnlineTime + sessionTime;
+		long sessionTime = logoutTime - smpPlayer.loginTime;
+		long currentOnlineTime = smpPlayer.getTime_online();
+		long timeOnline = currentOnlineTime + sessionTime;
 		smpPlayer.setTime_online(timeOnline);
 		plugin.sql.savePlayer(smpPlayer);		
 		plugin.players.remove(smpPlayer);

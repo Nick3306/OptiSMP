@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.Nick3306</groupId>
   <artifactId>OptiSMP</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
   <build>
     <plugins>
       <plugin>
@@ -30,12 +30,8 @@
   </build>
   <repositories>
     <repository>
-      <id>bukkit-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-    </repository>
-    <repository>
-      <id>pex-repo</id>
-      <url>http://pex-repo.aoeu.xyz</url>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
       <id>vault-repo</id>
@@ -48,11 +44,17 @@
       <artifactId>VaultAPI</artifactId>
       <version>1.6</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>bukkit</artifactId>
+          <groupId>org.bukkit</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.9-R0.1-SNAPSHOT</version>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.13-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -68,12 +70,16 @@
           <groupId>com.google.guava</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>ebean</artifactId>
-          <groupId>org.avaje</groupId>
+          <artifactId>gson</artifactId>
+          <groupId>com.google.code.gson</groupId>
         </exclusion>
         <exclusion>
           <artifactId>snakeyaml</artifactId>
           <groupId>org.yaml</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>bungeecord-chat</artifactId>
+          <groupId>net.md-5</groupId>
         </exclusion>
       </exclusions>
     </dependency>
