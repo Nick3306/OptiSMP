@@ -7,6 +7,7 @@ Nick3306\github\io\OptiSMP\Main.class
 Nick3306\github\io\OptiSMP\Listeners\BlockEditListeners.class
 Nick3306\github\io\OptiSMP\Utilities\MySql$6.class
 Nick3306\github\io\OptiSMP\Utilities\SMPplayer.class
+Nick3306\github\io\OptiSMP\Listeners\TabCompleteListener.class
 Nick3306\github\io\OptiSMP\Components\OptiProtect\ProtectUtilities$1.class
 Nick3306\github\io\OptiSMP\Components\OptiProtect\ProtectUtilities.class
 Nick3306\github\io\OptiSMP\Utilities\MySql$2.class

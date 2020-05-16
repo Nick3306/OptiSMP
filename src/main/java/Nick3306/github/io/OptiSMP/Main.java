@@ -18,6 +18,7 @@ import Nick3306.github.io.OptiSMP.Listeners.BlockEditListeners;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerJoinListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerLeaveListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerMovement;
+import Nick3306.github.io.OptiSMP.Listeners.TabCompleteListener;
 import Nick3306.github.io.OptiSMP.Listeners.BlockPlaceListener;
 import Nick3306.github.io.OptiSMP.Listeners.BucketEmptyListener;
 import Nick3306.github.io.OptiSMP.Listeners.ChatListener;
@@ -76,7 +77,7 @@ public class Main extends JavaPlugin
 		pm.registerEvents(new EntityDamageListener(this), this);
 		pm.registerEvents(new HangingBreakEvent(this), this);
 		pm.registerEvents(new InteractEntityListener(this), this);
-		
+		pm.registerEvents(new TabCompleteListener(this), this);
 		
 		getCommand("pfield").setExecutor(new PField(this));
 		getCommand("stats").setExecutor(new Stats(this));

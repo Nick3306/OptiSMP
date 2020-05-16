@@ -65,7 +65,7 @@ public class PField implements CommandExecutor
 			{
 				if(args.length != 2 && args.length != 4)
 				{
-					player.sendMessage(ChatColor.RED + "Incorrect usage: /protect create <fieldname>");
+					player.sendMessage(ChatColor.RED + "Incorrect usage: /pfield create <fieldname>");
 					return false;
 				}
 				if(args[1].length() > 25)
@@ -167,7 +167,7 @@ public class PField implements CommandExecutor
 			{
 				if(args.length != 3)
 				{
-					player.sendMessage(ChatColor.RED + "Incorrect usage: /protect addmember <membername> <fieldname>");
+					player.sendMessage(ChatColor.RED + "Incorrect usage: /pfield addmember <membername> <fieldname>");
 					return false;
 				}
 				if(args.length == 3)
@@ -210,7 +210,7 @@ public class PField implements CommandExecutor
 			{
 				if(args.length !=3)
 				{
-					player.sendMessage(ChatColor.RED + "Incorrect usage: /protect removemember <membername> <fieldname>");
+					player.sendMessage(ChatColor.RED + "Incorrect usage: /pfield removemember <membername> <fieldname>");
 					return false;
 				}
 				if(args.length == 3)

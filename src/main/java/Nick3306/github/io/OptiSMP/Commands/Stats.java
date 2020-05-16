@@ -50,7 +50,7 @@ public class Stats implements CommandExecutor
 				player.sendMessage(ChatColor.YELLOW + "Last Online: " + smpPlayer.getLast_online());
 				player.sendMessage(ChatColor.YELLOW + "Total Logins: " + smpPlayer.getTotal_logins());
 				player.sendMessage(ChatColor.YELLOW + "Time Online: " + time);
-				player.sendMessage(ChatColor.YELLOW + "Total Votes: " + smpPlayer.getTotal_votes());
+				player.sendMessage(ChatColor.YELLOW + "Lines Spoken: " + smpPlayer.getLines_spoken());
 				player.sendMessage(ChatColor.YELLOW + "Blocks Placed: " + smpPlayer.getBlocks_placed());
 				player.sendMessage(ChatColor.YELLOW + "Blocks Broken: " + smpPlayer.getBlocks_broken());
 				player.sendMessage(ChatColor.YELLOW + "Players Killed: " + smpPlayer.getPlayers_killed());
