@@ -126,15 +126,7 @@ public class PField implements CommandExecutor
 					ProtectionField field = proUtil.getPField(loc);
 					if(field != null)
 					{
-						player.sendMessage(ChatColor.GREEN + "Name: " + ChatColor.YELLOW + field.getName());
-						player.sendMessage(ChatColor.GREEN + "Owner: " + ChatColor.YELLOW + Bukkit.getOfflinePlayer(field.getOwner()).getName());
-						player.sendMessage(ChatColor.GREEN + "Area: " + ChatColor.YELLOW + field.getArea() + " blocks");
-						String members = "";
-						for(UUID member : field.members)
-						{
-							members = members + plugin.getServer().getOfflinePlayer(member).getName() + ", ";
-						}
-						player.sendMessage(ChatColor.GREEN + "Members: " + members);
+						proUtil.sendPfieldInfo(player, field);
 						proUtil.highlightField(field, player);
 					}
 					else
@@ -148,12 +140,8 @@ public class PField implements CommandExecutor
 					ProtectionField field = proUtil.getPFieldByName(player.getUniqueId(), args[1]);
 					if(field != null)
 					{
-						player.sendMessage(ChatColor.GREEN + "Name: " + ChatColor.YELLOW + field.getName());
-						player.sendMessage(ChatColor.GREEN + "Owner: " + ChatColor.YELLOW + Bukkit.getOfflinePlayer(field.getOwner()).getName());
-						player.sendMessage(ChatColor.GREEN + "Area: " + ChatColor.YELLOW + field.getArea() + " blocks");
-						player.sendMessage(ChatColor.GREEN + "World: " + ChatColor.YELLOW + field.getWorld().getName());
-						player.sendMessage(ChatColor.GREEN + "Location: " + ChatColor.YELLOW + field.getBlock1().toString());
-						//proUtil.highlightField(field, player);
+						proUtil.sendPfieldInfo(player, field);
+						proUtil.highlightField(field, player);
 					}
 					else
 					{

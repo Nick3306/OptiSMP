@@ -71,29 +71,51 @@ public class TabCompleteListener implements Listener {
 			if (buffer.toLowerCase().startsWith("/pfield create ")) {
 				completions.clear();
 			}
-
+			
 			if (buffer.toLowerCase().startsWith("/pfield remove ")) {
 				completions.clear();
 
-				List<String> list = new ArrayList<String>();
+				List<String> pfieldList = new ArrayList<String>();
 				for (ProtectionField field : plugin.fields) {
 					if (field.getOwner().equals(playerUUID)) {
-						list.add(field.getName());
+						pfieldList.add(field.getName());
 					}
 				}
-				tabComplete(args, completions, list);
+
+				if (args.length == 2) {
+					completions.addAll(pfieldList);
+				} else if (args.length == 3) {
+					for (String field : pfieldList) {
+						if (!args[2].equalsIgnoreCase(field)) {
+							if (field.toLowerCase().startsWith(args[2].toLowerCase())) {
+								completions.add(field);
+							}
+						}
+					}
+				}
 			}
 
 			if (buffer.toLowerCase().startsWith("/pfield info ")) {
 				completions.clear();
 
-				List<String> list = new ArrayList<String>();
+				List<String> pfieldList = new ArrayList<String>();
 				for (ProtectionField field : plugin.fields) {
 					if (field.getOwner().equals(playerUUID)) {
-						list.add(field.getName());
+						pfieldList.add(field.getName());
 					}
 				}
-				tabComplete(args, completions, list);
+
+				if (args.length == 2) {
+					completions.addAll(pfieldList);
+				} else if (args.length == 3) {
+					for (String field : pfieldList) {
+						if (!args[2].equalsIgnoreCase(field)) {
+							if (field.toLowerCase().startsWith(args[2].toLowerCase())) {
+								completions.add(field);
+							}
+						}
+					}
+				}
 			}
 
 			if (buffer.toLowerCase().startsWith("/pfield addmember ")) {

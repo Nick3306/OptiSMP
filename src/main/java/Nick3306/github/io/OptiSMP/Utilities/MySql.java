@@ -301,9 +301,6 @@ public void getFields()
 						plugin.players.put(player.getUniqueId(), toAdd);		
 						Bukkit.getLogger().info("[OptiSMP] player retrieved from the DB");
 						myConn.close();
-										
-						
-						
 					}
 					
 				}
@@ -424,31 +421,37 @@ public void getFields()
 						int lines_spoken = playerResult.getInt("lines_spoken");
 						//int damage_dealt = playerResult.getInt("damage_dealt");
 						//int damage_received = playerResult.getInt("damage_received");
-						int players_killed = playerResult.getInt("players_killed");
+						//int players_killed = playerResult.getInt("players_killed");
 						int monsters_killed = playerResult.getInt("monsters_killed");
 						int animals_killed = playerResult.getInt("animals_killed");
 						int total_deaths = playerResult.getInt("total_deaths");
-						//int fish_caught = playerResult.getInt("fish_caught");
-						//int items_enchanted = playerResult.getInt("items_enchanted");
-						//int animals_bred = playerResult.getInt("animals_bred");
-					
-					
-						player.sendMessage(ChatColor.GREEN + "Stats for player " + current_name);
-						player.sendMessage(ChatColor.YELLOW + "Join Date: " + join_date);
-						player.sendMessage(ChatColor.YELLOW + "Last Online: " + last_online);
-						player.sendMessage(ChatColor.YELLOW + "Total Logins: " + total_logins);					
+						int fish_caught = playerResult.getInt("fish_caught");
+						int items_enchanted = playerResult.getInt("items_enchanted");
+						int animals_bred = playerResult.getInt("animals_bred");
+						int protection_blocks_left = playerResult.getInt("protection_blocks_left");
+						//int protection_blocks_max = playerResult.getInt("protection_blocks_max");
+						
+						//calculate time online
 						long second = (time_online / 1000) % 60;
 						long minute = (time_online  / (1000 * 60)) % 60;
 						long hour = (time_online / (1000 * 60 * 60));
 						String time = (hour + " hours " + minute + " minutes " +  second + " seconds.");
+						
+						player.sendMessage(ChatColor.GREEN + "Stats for player " + current_name);
+						player.sendMessage(ChatColor.YELLOW + "Join Date: " + join_date);
+						player.sendMessage(ChatColor.YELLOW + "Last Online: " + last_online);
+						player.sendMessage(ChatColor.YELLOW + "Total Logins: " + total_logins);
 						player.sendMessage(ChatColor.YELLOW + "Time Online: " + time);
-						player.sendMessage(ChatColor.YELLOW + "lines_spoken: " + lines_spoken);
+						player.sendMessage(ChatColor.YELLOW + "Lines Spoken: " + lines_spoken);
 						player.sendMessage(ChatColor.YELLOW + "Blocks Placed: " + blocks_placed);
 						player.sendMessage(ChatColor.YELLOW + "Blocks Broken: " + blocks_broken);
-						player.sendMessage(ChatColor.YELLOW + "Players Killed: " + players_killed);
 						player.sendMessage(ChatColor.YELLOW + "Monsters Killed: " + monsters_killed);
 						player.sendMessage(ChatColor.YELLOW + "Animals Killed: " + animals_killed);
+						player.sendMessage(ChatColor.YELLOW + "Animals Bred: " + animals_bred);
+						player.sendMessage(ChatColor.YELLOW + "Fish Caught: " + fish_caught);
+						player.sendMessage(ChatColor.YELLOW + "Items Enchanted: " + items_enchanted);
 						player.sendMessage(ChatColor.YELLOW + "Total Deaths: " + total_deaths);
+						player.sendMessage(ChatColor.YELLOW + "Protection Blocks: " + protection_blocks_left);
 					}
 					else
 					{

@@ -33,6 +33,7 @@ Nick3306\github\io\OptiSMP\Listeners\PlayerJoinListener.class
 Nick3306\github\io\OptiSMP\Components\OptiProtect\ProtectUtilities$2.class
 Nick3306\github\io\OptiSMP\Utilities\MySql$1.class
 Nick3306\github\io\OptiSMP\Listeners\BlockPlaceListener.class
+Nick3306\github\io\OptiSMP\Listeners\EntityBreedListener.class
 Nick3306\github\io\OptiSMP\Listeners\InteractEntityListener.class
 Nick3306\github\io\OptiSMP\Listeners\ChatListener.class
 Nick3306\github\io\OptiSMP\Utilities\MySql$9.class
