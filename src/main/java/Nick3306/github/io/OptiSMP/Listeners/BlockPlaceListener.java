@@ -23,10 +23,11 @@ public class BlockPlaceListener implements Listener
 	private GeneralUtilities util;
 	public BlockPlaceListener(Main plugin)
 	{
-	   this.plugin = plugin;
-	   this.util = this.plugin.util; 
-	   this.proUtil = this.plugin.protectUtil;
+		this.plugin = plugin;
+		this.util = this.plugin.util; 
+		this.proUtil = this.plugin.protectUtil;
 	}
+
 	@EventHandler
 	public void onBlockPlaced(BlockPlaceEvent event)
 	{
@@ -35,7 +36,7 @@ public class BlockPlaceListener implements Listener
 		//Check if player is defining field
 		if(this.plugin.protectUtil.definingField(player))
 		{
-			
+
 			Location block = event.getBlockPlaced().getLocation();		
 			ProtectionField field = proUtil.getNewField(player);
 			if (field.getBlock1() == null && field.getDefineType().equalsIgnoreCase("cuboid"))
@@ -76,7 +77,7 @@ public class BlockPlaceListener implements Listener
 				{	
 					//Subtract the blocks from their remaining protection blocks
 					smpPlayer.setProtectionBlocksLeft(smpPlayer.getProtectionBlocksLeft() - field.getArea());
-					
+
 					//save player
 					plugin.sql.savePlayer(smpPlayer);
 					//Add field to the global pfield list
@@ -91,7 +92,7 @@ public class BlockPlaceListener implements Listener
 					this.plugin.sql.addField(field);
 					//Highlight field so player can see it
 					proUtil.highlightField(field, player);		
-					
+
 					//log created field
 					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 					proUtil.logFieldAction(date + ": Player " + player.getName() + " CREATED the field " + field.getName() + " using " + field.getArea() + " blocks. They have " + smpPlayer.getProtectionBlocksLeft() + " block left." );
@@ -104,8 +105,7 @@ public class BlockPlaceListener implements Listener
 				}											
 			}
 		}
-		
-		
+
 		//Make sure player can build in area
 		if(this.plugin.protectUtil.inField(placedBlock))
 		{			
@@ -121,7 +121,7 @@ public class BlockPlaceListener implements Listener
 				//They are a member, let them build
 			}
 		}
-		
+
 		//Increment their blocks placed stat
 		SMPplayer smpPlayer = util.getSMPPlayer(player);
 		smpPlayer.setBlocks_placed(smpPlayer.getBlocks_placed() + 1);

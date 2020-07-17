@@ -24,14 +24,15 @@ public class BlockBreakListener implements Listener
 		this.util = this.plugin.util;
 		this.proUtil = this.plugin.protectUtil;
 	}
+
 	@EventHandler
 	public void onBlockBroken(BlockBreakEvent event)
 	{
 		Player player = event.getPlayer();
 		Location blockBroken = event.getBlock().getLocation();
-		
+
 		if(this.plugin.protectUtil.inField(blockBroken))
-		{			
+		{
 			ProtectionField pField = proUtil.getPField(blockBroken);
 			if(!pField.isMember(player) && !player.getUniqueId().toString().equals(pField.getOwner().toString()) && !player.hasPermission("optiSMP.protect.staff"))
 			{
@@ -45,7 +46,7 @@ public class BlockBreakListener implements Listener
 				//They are a member, let them build
 			}
 		}
-		
+
 		//Decrement the blocks_broken stat
 		SMPplayer smpPlayer = util.getSMPPlayer(player);
 		smpPlayer.setBlocks_broken(smpPlayer.getBlocks_broken() + 1);

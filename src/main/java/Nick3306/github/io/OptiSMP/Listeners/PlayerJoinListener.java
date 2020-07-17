@@ -10,15 +10,11 @@ import Nick3306.github.io.OptiSMP.Main;
 public class PlayerJoinListener implements Listener
 {
 	private Main plugin;
-	//private ProtectUtilities proUtil;
-	//private GeneralUtilities util;
 	public PlayerJoinListener(Main plugin)
 	{
 	   this.plugin = plugin;
-	   //this.proUtil = this.plugin.protectUtil;
-	   //this.util = plugin.util;
-	   
 	}
+	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) 
 	{

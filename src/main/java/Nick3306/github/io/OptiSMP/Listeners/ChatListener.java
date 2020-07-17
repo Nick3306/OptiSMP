@@ -12,13 +12,11 @@ import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
 public class ChatListener implements Listener 
 {
 	private Main plugin;
-	//private ProtectUtilities proUtil;
 	private GeneralUtilities util;
 	public ChatListener(Main plugin)
 	{
 	   this.plugin = plugin;
 	   this.util = this.plugin.util; 
-	   //this.proUtil = this.plugin.protectUtil;
 	}
 	
 	@EventHandler
@@ -28,5 +26,4 @@ public class ChatListener implements Listener
 		SMPplayer smpPlayer = util.getSMPPlayer(player);
 		smpPlayer.setLines_spoken(smpPlayer.getLines_spoken()+ 1);
 	}
-	
 }

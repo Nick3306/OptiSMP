@@ -17,13 +17,12 @@ public class InteractEntityListener implements Listener
 {
 	private Main plugin;
 	private ProtectUtilities proUtil;
-	//private GeneralUtilities util;
 	public InteractEntityListener(Main plugin)
 	{
 	   this.plugin = plugin;
-	   //this.util = this.plugin.util;
 	   this.proUtil = this.plugin.protectUtil;
 	}
+	
 	@EventHandler
 	public void onPlayerEntityInteract(PlayerInteractEntityEvent event)
 	{

@@ -8,7 +8,6 @@ C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Utilities\Gen
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\BlockPlaceListener.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\PVP\WorldUtil.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\Trade\TradeUtilities.java
-C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\BlockEditListeners.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\PlayerLeaveListener.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\BlockBreakListener.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\EnchantItemListener.java
@@ -26,6 +25,7 @@ C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Utilities\MyS
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Commands\PField.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\EntityDeathListener.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\HangingBreakEvent.java
+C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\PlayerInteractListener.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\Trade\Trade.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Components\OptiProtect\ProtectUtilities.java
 C:\Users\Dion\git\OptiSMP\src\main\java\Nick3306\github\io\OptiSMP\Listeners\BucketEmptyListener.java

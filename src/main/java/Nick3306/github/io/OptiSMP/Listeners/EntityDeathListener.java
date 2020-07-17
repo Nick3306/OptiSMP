@@ -17,14 +17,13 @@ import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
 public class EntityDeathListener implements Listener
 {
 	private Main plugin;
-	//private ProtectUtilities proUtil;
 	private GeneralUtilities util;
 	public EntityDeathListener(Main plugin)
 	{
-	   this.plugin = plugin;
-	   this.util = this.plugin.util; 
-	   //this.proUtil = this.plugin.protectUtil;
+		this.plugin = plugin;
+		this.util = this.plugin.util; 
 	}
+
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)
 	{
@@ -35,7 +34,7 @@ public class EntityDeathListener implements Listener
 			if(nEvent.getDamager() instanceof Player)
 			{
 				Player player = (Player)nEvent.getDamager();
-                SMPplayer smpPlayer = util.getSMPPlayer(player);             
+				SMPplayer smpPlayer = util.getSMPPlayer(player);             
 				if(e instanceof Monster)
 				{		
 					// player killed a monster increment monsters killed
@@ -47,28 +46,28 @@ public class EntityDeathListener implements Listener
 					//player killed an animal increment animals killed
 					smpPlayer.setAnimlas_killed(smpPlayer.getAnimlas_killed() + 1);
 				}
-            }
+			}
 			else if(nEvent.getDamager() instanceof Arrow)
 			{
 				Arrow arrow = (Arrow)nEvent.getDamager();
 				if(arrow.getShooter() instanceof Player) 
 				{
-			        Player player = (Player) arrow.getShooter();
-			    					
-			        SMPplayer smpPlayer = util.getSMPPlayer(player);             
-			        if(e instanceof Monster)
-			        {		
-			        	// player killed a monster increment monsters killed
-			        	smpPlayer.setMonsters_killed(smpPlayer.getMonsters_killed() + 1);
-			        	util.checkRankUp(smpPlayer);
-			        }
-			        if(e instanceof Animals)
-			        {
-			        	//player killed an animal increment animals killed
-			        	smpPlayer.setAnimlas_killed(smpPlayer.getAnimlas_killed() + 1);
-			        }
+					Player player = (Player) arrow.getShooter();
+
+					SMPplayer smpPlayer = util.getSMPPlayer(player);             
+					if(e instanceof Monster)
+					{		
+						// player killed a monster increment monsters killed
+						smpPlayer.setMonsters_killed(smpPlayer.getMonsters_killed() + 1);
+						util.checkRankUp(smpPlayer);
+					}
+					if(e instanceof Animals)
+					{
+						//player killed an animal increment animals killed
+						smpPlayer.setAnimlas_killed(smpPlayer.getAnimlas_killed() + 1);
+					}
 				}
 			}
-        }
-     }
+		}
+	}
 }

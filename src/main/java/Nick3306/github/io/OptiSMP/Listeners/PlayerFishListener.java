@@ -12,14 +12,13 @@ import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
 public class PlayerFishListener implements Listener
 {
 	private Main plugin;
-	//private ProtectUtilities proUtil;
 	private GeneralUtilities util;
 	public PlayerFishListener(Main plugin)
 	{
 	   this.plugin = plugin;
 	   this.util = this.plugin.util; 
-	   //this.proUtil = this.plugin.protectUtil;
 	}
+	
 	@EventHandler
 	public void onPlayercatchFish(PlayerFishEvent event)
     {

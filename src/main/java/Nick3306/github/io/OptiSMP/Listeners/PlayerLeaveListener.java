@@ -12,15 +12,14 @@ import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
 public class PlayerLeaveListener implements Listener
 {
 	private Main plugin;
-	//private ProtectUtilities proUtil;
 	private GeneralUtilities util;
 	public PlayerLeaveListener(Main plugin)
 	{
 	   this.plugin = plugin;
-	   //this.proUtil = this.plugin.protectUtil;
 	   this.util = plugin.util;
 	   
 	}
+	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) 
 	{

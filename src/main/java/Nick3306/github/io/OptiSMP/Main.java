@@ -14,7 +14,7 @@ import Nick3306.github.io.OptiSMP.Components.Trade.Trade;
 import Nick3306.github.io.OptiSMP.Components.Trade.TradeUtilities;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Listeners.BlockBreakListener;
-import Nick3306.github.io.OptiSMP.Listeners.BlockEditListeners;
+import Nick3306.github.io.OptiSMP.Listeners.PlayerInteractListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerJoinListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerLeaveListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerMovement;
@@ -63,7 +63,7 @@ public class Main extends JavaPlugin
 			
 		
 		// Register listeners
-		pm.registerEvents(new BlockEditListeners(this), this);
+		pm.registerEvents(new PlayerInteractListener(this), this);
 		pm.registerEvents(new BlockPlaceListener(this), this);
 		pm.registerEvents(new BlockBreakListener(this), this);
 		pm.registerEvents(new PlayerMovement(this), this);

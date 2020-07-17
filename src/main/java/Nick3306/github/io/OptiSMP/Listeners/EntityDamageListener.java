@@ -19,28 +19,26 @@ public class EntityDamageListener implements Listener
 {
 	private Main plugin;
 	private ProtectUtilities proUtil;
-	//private GeneralUtilities util;
 	public EntityDamageListener(Main plugin)
 	{
-	   this.plugin = plugin;
-	   //this.util = this.plugin.util; 
-	   this.proUtil = this.plugin.protectUtil;
+		this.plugin = plugin;
+		this.proUtil = this.plugin.protectUtil;
 	}
-	
+
 	@EventHandler
 	public void onDamageEntity(EntityDamageByEntityEvent event)
 	{
 		Entity entity = event.getEntity();
 		Location loc = entity.getLocation();
 		if(entity instanceof Animals || entity instanceof ItemFrame || entity instanceof Villager)
-		{	
+		{
 			if(proUtil.inField(loc))
-			{						
+			{
 				if(event.getDamager() instanceof Player)
-				{					
+				{
 					Player player = (Player) event.getDamager();
 					ProtectionField pfield = proUtil.getPField(loc);
-					
+
 					if(pfield.members.contains(player.getUniqueId()) || pfield.getOwner().equals(player.getUniqueId()))
 					{
 						// player is allowed to kill innocent animals in this field
@@ -62,8 +60,7 @@ public class EntityDamageListener implements Listener
 						}
 						event.setCancelled(true);
 					}
-
-				}						
+				}
 			}
 			else
 			{
@@ -75,5 +72,4 @@ public class EntityDamageListener implements Listener
 			return;
 		}
 	}
-	
 }

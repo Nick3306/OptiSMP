@@ -4,7 +4,6 @@ Nick3306\github\io\OptiSMP\Utilities\GeneralUtilities.class
 Nick3306\github\io\OptiSMP\Commands\TradeCommand.class
 Nick3306\github\io\OptiSMP\Components\Trade\Trade.class
 Nick3306\github\io\OptiSMP\Main.class
-Nick3306\github\io\OptiSMP\Listeners\BlockEditListeners.class
 Nick3306\github\io\OptiSMP\Utilities\MySql$6.class
 Nick3306\github\io\OptiSMP\Utilities\SMPplayer.class
 Nick3306\github\io\OptiSMP\Listeners\TabCompleteListener.class

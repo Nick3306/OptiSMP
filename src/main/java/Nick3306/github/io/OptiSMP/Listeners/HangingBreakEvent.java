@@ -15,13 +15,12 @@ public class HangingBreakEvent implements Listener
 {
 	private Main plugin;
 	private ProtectUtilities proUtil;
-	//private GeneralUtilities util;
 	public HangingBreakEvent(Main plugin)
 	{
 	   this.plugin = plugin;
-	   //this.util = this.plugin.util; 
 	   this.proUtil = this.plugin.protectUtil;
 	}
+	
 	@EventHandler
 	public void onHangingBreak(HangingBreakByEntityEvent  event) {
 		if(event.getRemover() instanceof Player)

@@ -23,7 +23,6 @@ public class PlayerMovement implements Listener
 	   this.plugin = plugin;
 	   this.proUtil = this.plugin.protectUtil;
 	   this.util = plugin.util;
-	   
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
@@ -39,7 +38,6 @@ public class PlayerMovement implements Listener
 		    	SMPplayer smpPlayer = util.getSMPPlayer(player);
 		    	String lastField = smpPlayer.getLastField();
 
-		    	
 		    	ProtectionField currentField = proUtil.getPField(player.getLocation());
 		    	if(currentField != null)
 		    	{
@@ -63,7 +61,6 @@ public class PlayerMovement implements Listener
 			    		}
 			    		*/
 			    	}		    
-		    	
 		    	}	
 		    	else
 		    	{
@@ -72,12 +69,10 @@ public class PlayerMovement implements Listener
 		    			smpPlayer.setLastField("none");	
 		    		}
 		    	}
-
 		    }
 		    else
 		    {
 		    	return;
 		    }
 	  }
-	  
 }
