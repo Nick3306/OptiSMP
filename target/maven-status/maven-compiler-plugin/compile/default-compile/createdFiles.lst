@@ -22,6 +22,7 @@ Nick3306\github\io\OptiSMP\Components\PVP\WorldUtil.class
 Nick3306\github\io\OptiSMP\Utilities\MySql$3.class
 Nick3306\github\io\OptiSMP\Components\Trade\TradeUtilities.class
 Nick3306\github\io\OptiSMP\Listeners\BucketEmptyListener.class
+Nick3306\github\io\OptiSMP\Listeners\PlayerInteractListener.class
 Nick3306\github\io\OptiSMP\Listeners\PlayerLeaveListener.class
 Nick3306\github\io\OptiSMP\Utilities\MySql$7.class
 Nick3306\github\io\OptiSMP\Commands\PField.class

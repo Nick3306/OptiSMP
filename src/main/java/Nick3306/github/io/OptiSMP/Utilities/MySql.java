@@ -28,8 +28,19 @@ public class MySql
 		dataSource = new HikariDataSource();
 		this.plugin = plugin;
 		//this.util = this.plugin.protectUtil;
-				
 		
+		String host = plugin.getConfig().getString("mysql.host");
+		String port = plugin.getConfig().getString("mysql.port");
+		String database = plugin.getConfig().getString("mysql.database");
+		String user = plugin.getConfig().getString("mysql.user");
+		String password = plugin.getConfig().getString("mysql.password");
+		
+		dataSource.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
+		dataSource.setUsername(user);
+		dataSource.setPassword(password);
+		dataSource.setMaximumPoolSize(15);
+		
+		/* Old DataSource connection
 		dataSource.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
 		dataSource.addDataSourceProperty("serverName", plugin.getConfig().getString("mysql.host"));
         dataSource.addDataSourceProperty("port", plugin.getConfig().getString("mysql.port"));
@@ -37,7 +48,8 @@ public class MySql
         dataSource.addDataSourceProperty("user", plugin.getConfig().getString("mysql.user"));
         dataSource.addDataSourceProperty("password", plugin.getConfig().getString("mysql.password"));
         dataSource.setMaximumPoolSize(15);
-	   // dataSource.setIdleTimeout(0);
+		// dataSource.setIdleTimeout(0);
+		 */
 	}
 public void getFields()
 {
