@@ -9,21 +9,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import Nick3306.github.io.OptiSMP.Main;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
 import Nick3306.github.io.OptiSMP.Components.Trade.Trade;
-import Nick3306.github.io.OptiSMP.Components.Trade.TradeUtilities;
 
 public class TradeCommand implements CommandExecutor
 {
 
 	private Main plugin;
-	private TradeUtilities util;
+	//private TradeUtilities util;
 	//waiting response player get stored here
 	public HashMap<String, Trade> waitingResponse = new HashMap<String, Trade>();	
 	public TradeCommand(Main plugin)
 	{
 	   this.plugin = plugin;
-	   this.util = this.plugin.tradeUtil;
+	   //this.util = this.plugin.tradeUtil;
 	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2lable, String[] args)

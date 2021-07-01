@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,21 +16,31 @@ import com.zaxxer.hikari.*;
 
 import Nick3306.github.io.OptiSMP.Main;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 
 // Uses Hikari to implement connection pooling so a new connection doesnt have to be opened every time I need it
 public class MySql 
 {
 	private Main plugin;
-	private ProtectUtilities util;
+	//private ProtectUtilities util;
 	HikariDataSource dataSource;
 	public MySql(Main plugin)
 	{
 		dataSource = new HikariDataSource();
 		this.plugin = plugin;
-		this.util = this.plugin.protectUtil;
-				
+		//this.util = this.plugin.protectUtil;
 		
+		String host = plugin.getConfig().getString("mysql.host");
+		String port = plugin.getConfig().getString("mysql.port");
+		String database = plugin.getConfig().getString("mysql.database");
+		String user = plugin.getConfig().getString("mysql.user");
+		String password = plugin.getConfig().getString("mysql.password");
+		
+		dataSource.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
+		dataSource.setUsername(user);
+		dataSource.setPassword(password);
+		dataSource.setMaximumPoolSize(15);
+		
+		/* Old DataSource connection
 		dataSource.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
 		dataSource.addDataSourceProperty("serverName", plugin.getConfig().getString("mysql.host"));
         dataSource.addDataSourceProperty("port", plugin.getConfig().getString("mysql.port"));
@@ -40,7 +48,8 @@ public class MySql
         dataSource.addDataSourceProperty("user", plugin.getConfig().getString("mysql.user"));
         dataSource.addDataSourceProperty("password", plugin.getConfig().getString("mysql.password"));
         dataSource.setMaximumPoolSize(15);
-	   // dataSource.setIdleTimeout(0);
+		// dataSource.setIdleTimeout(0);
+		 */
 	}
 public void getFields()
 {
@@ -54,7 +63,7 @@ public void getFields()
 			String block1String, block2String;
 			Location block1, block2;
 			World world;
-			String greeting;
+			//String greeting;
 			
 			try 
 			{	
@@ -304,9 +313,6 @@ public void getFields()
 						plugin.players.put(player.getUniqueId(), toAdd);		
 						Bukkit.getLogger().info("[OptiSMP] player retrieved from the DB");
 						myConn.close();
-										
-						
-						
 					}
 					
 				}
@@ -421,37 +427,43 @@ public void getFields()
 						String last_online = playerResult.getString("last_online");
 						int total_logins = playerResult.getInt("total_logins");
 						long time_online = playerResult.getLong("time_online");
-						int total_votes = playerResult.getInt("total_votes");
+						//int total_votes = playerResult.getInt("total_votes");
 						int blocks_placed = playerResult.getInt("blocks_placed");
 						int blocks_broken = playerResult.getInt("blocks_broken");
 						int lines_spoken = playerResult.getInt("lines_spoken");
-						int damage_dealt = playerResult.getInt("damage_dealt");
-						int damage_received = playerResult.getInt("damage_received");
-						int players_killed = playerResult.getInt("players_killed");
+						//int damage_dealt = playerResult.getInt("damage_dealt");
+						//int damage_received = playerResult.getInt("damage_received");
+						//int players_killed = playerResult.getInt("players_killed");
 						int monsters_killed = playerResult.getInt("monsters_killed");
 						int animals_killed = playerResult.getInt("animals_killed");
 						int total_deaths = playerResult.getInt("total_deaths");
 						int fish_caught = playerResult.getInt("fish_caught");
 						int items_enchanted = playerResult.getInt("items_enchanted");
 						int animals_bred = playerResult.getInt("animals_bred");
-					
-					
-						player.sendMessage(ChatColor.GREEN + "Stats for player " + current_name);
-						player.sendMessage(ChatColor.YELLOW + "Join Date: " + join_date);
-						player.sendMessage(ChatColor.YELLOW + "Last Online: " + last_online);
-						player.sendMessage(ChatColor.YELLOW + "Total Logins: " + total_logins);					
+						int protection_blocks_left = playerResult.getInt("protection_blocks_left");
+						//int protection_blocks_max = playerResult.getInt("protection_blocks_max");
+						
+						//calculate time online
 						long second = (time_online / 1000) % 60;
 						long minute = (time_online  / (1000 * 60)) % 60;
 						long hour = (time_online / (1000 * 60 * 60));
 						String time = (hour + " hours " + minute + " minutes " +  second + " seconds.");
+						
+						player.sendMessage(ChatColor.GREEN + "Stats for player " + current_name);
+						player.sendMessage(ChatColor.YELLOW + "Join Date: " + join_date);
+						player.sendMessage(ChatColor.YELLOW + "Last Online: " + last_online);
+						player.sendMessage(ChatColor.YELLOW + "Total Logins: " + total_logins);
 						player.sendMessage(ChatColor.YELLOW + "Time Online: " + time);
-						player.sendMessage(ChatColor.YELLOW + "lines_spoken: " + lines_spoken);
+						player.sendMessage(ChatColor.YELLOW + "Lines Spoken: " + lines_spoken);
 						player.sendMessage(ChatColor.YELLOW + "Blocks Placed: " + blocks_placed);
 						player.sendMessage(ChatColor.YELLOW + "Blocks Broken: " + blocks_broken);
-						player.sendMessage(ChatColor.YELLOW + "Players Killed: " + players_killed);
 						player.sendMessage(ChatColor.YELLOW + "Monsters Killed: " + monsters_killed);
 						player.sendMessage(ChatColor.YELLOW + "Animals Killed: " + animals_killed);
+						player.sendMessage(ChatColor.YELLOW + "Animals Bred: " + animals_bred);
+						player.sendMessage(ChatColor.YELLOW + "Fish Caught: " + fish_caught);
+						player.sendMessage(ChatColor.YELLOW + "Items Enchanted: " + items_enchanted);
 						player.sendMessage(ChatColor.YELLOW + "Total Deaths: " + total_deaths);
+						player.sendMessage(ChatColor.YELLOW + "Protection Blocks: " + protection_blocks_left);
 					}
 					else
 					{

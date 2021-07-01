@@ -6,21 +6,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import Nick3306.github.io.OptiSMP.Main;
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
 
 public class PlayerDeathListener implements Listener
 {
 	private Main plugin;
-	private ProtectUtilities proUtil;
 	private GeneralUtilities util;
 	public PlayerDeathListener(Main plugin)
 	{
 	   this.plugin = plugin;
 	   this.util = this.plugin.util; 
-	   this.proUtil = this.plugin.protectUtil;
 	}
+	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event)
     {
@@ -35,6 +33,5 @@ public class PlayerDeathListener implements Listener
         	SMPplayer killer = util.getSMPPlayer(player.getKiller());
         	killer.setPlayers_killed(killer.getPlayers_killed() + 1);
         }
-   
     }
 }

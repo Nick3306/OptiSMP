@@ -1,6 +1,5 @@
 package Nick3306.github.io.OptiSMP.Listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +23,6 @@ public class PlayerMovement implements Listener
 	   this.plugin = plugin;
 	   this.proUtil = this.plugin.protectUtil;
 	   this.util = plugin.util;
-	   
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
@@ -32,14 +30,14 @@ public class PlayerMovement implements Listener
 	  {
 		 	org.bukkit.Location from = event.getFrom();
 		    org.bukkit.Location to = event.getTo();
-		    int x2;
+		    @SuppressWarnings("unused")
+			int x2;
 		    if(Math.round(from.getX()) != (x2 = (int) Math.round(to.getX())))
 		    {		    	
 		    	Player player = event.getPlayer();
 		    	SMPplayer smpPlayer = util.getSMPPlayer(player);
 		    	String lastField = smpPlayer.getLastField();
 
-		    	
 		    	ProtectionField currentField = proUtil.getPField(player.getLocation());
 		    	if(currentField != null)
 		    	{
@@ -63,7 +61,6 @@ public class PlayerMovement implements Listener
 			    		}
 			    		*/
 			    	}		    
-		    	
 		    	}	
 		    	else
 		    	{
@@ -72,12 +69,10 @@ public class PlayerMovement implements Listener
 		    			smpPlayer.setLastField("none");	
 		    		}
 		    	}
-
 		    }
 		    else
 		    {
 		    	return;
 		    }
 	  }
-	  
 }

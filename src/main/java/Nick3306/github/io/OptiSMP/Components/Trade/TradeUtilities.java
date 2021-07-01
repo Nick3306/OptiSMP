@@ -4,11 +4,11 @@ import Nick3306.github.io.OptiSMP.Main;
 
 public class TradeUtilities
 {
-	private Main plugin;
+	//private Main plugin;
 
 	public TradeUtilities(Main plugin)
 	{
-	   this.plugin = plugin;
+	   //this.plugin = plugin;
 	}
 	
 }

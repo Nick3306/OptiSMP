@@ -3,7 +3,6 @@ package Nick3306.github.io.OptiSMP.Components.OptiProtect;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

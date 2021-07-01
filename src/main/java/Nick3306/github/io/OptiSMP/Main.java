@@ -1,11 +1,8 @@
 package Nick3306.github.io.OptiSMP;
 
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
-
-import javax.naming.NamingException;
 
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,14 +14,16 @@ import Nick3306.github.io.OptiSMP.Components.Trade.Trade;
 import Nick3306.github.io.OptiSMP.Components.Trade.TradeUtilities;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Listeners.BlockBreakListener;
-import Nick3306.github.io.OptiSMP.Listeners.BlockEditListeners;
+import Nick3306.github.io.OptiSMP.Listeners.PlayerInteractListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerJoinListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerLeaveListener;
 import Nick3306.github.io.OptiSMP.Listeners.PlayerMovement;
+import Nick3306.github.io.OptiSMP.Listeners.TabCompleteListener;
 import Nick3306.github.io.OptiSMP.Listeners.BlockPlaceListener;
 import Nick3306.github.io.OptiSMP.Listeners.BucketEmptyListener;
 import Nick3306.github.io.OptiSMP.Listeners.ChatListener;
 import Nick3306.github.io.OptiSMP.Listeners.EnchantItemListener;
+import Nick3306.github.io.OptiSMP.Listeners.EntityBreedListener;
 import Nick3306.github.io.OptiSMP.Listeners.EntityDamageListener;
 import Nick3306.github.io.OptiSMP.Listeners.EntityDeathListener;
 import Nick3306.github.io.OptiSMP.Listeners.HangingBreakEvent;
@@ -34,8 +33,6 @@ import Nick3306.github.io.OptiSMP.Listeners.PlayerFishListener;
 import Nick3306.github.io.OptiSMP.Utilities.GeneralUtilities;
 import Nick3306.github.io.OptiSMP.Utilities.MySql;
 import Nick3306.github.io.OptiSMP.Utilities.SMPplayer;
-
-
 
 public class Main extends JavaPlugin
 {
@@ -66,7 +63,7 @@ public class Main extends JavaPlugin
 			
 		
 		// Register listeners
-		pm.registerEvents(new BlockEditListeners(this), this);
+		pm.registerEvents(new PlayerInteractListener(this), this);
 		pm.registerEvents(new BlockPlaceListener(this), this);
 		pm.registerEvents(new BlockBreakListener(this), this);
 		pm.registerEvents(new PlayerMovement(this), this);
@@ -81,7 +78,8 @@ public class Main extends JavaPlugin
 		pm.registerEvents(new EntityDamageListener(this), this);
 		pm.registerEvents(new HangingBreakEvent(this), this);
 		pm.registerEvents(new InteractEntityListener(this), this);
-		
+		pm.registerEvents(new TabCompleteListener(this), this);
+		pm.registerEvents(new EntityBreedListener(this), this);
 		
 		getCommand("pfield").setExecutor(new PField(this));
 		getCommand("stats").setExecutor(new Stats(this));

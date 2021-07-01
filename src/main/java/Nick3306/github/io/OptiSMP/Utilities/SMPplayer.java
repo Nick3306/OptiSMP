@@ -1,10 +1,10 @@
 package Nick3306.github.io.OptiSMP.Utilities;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectUtilities;
 import Nick3306.github.io.OptiSMP.Components.OptiProtect.ProtectionField;
 
 public class SMPplayer
@@ -14,7 +14,7 @@ public class SMPplayer
 	boolean pvp = false;
 	Player player;
 	
-	private ProtectUtilities util;
+	//private ProtectUtilities util;
 	// currency for later
 	int points;
 	
